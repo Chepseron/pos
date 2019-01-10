@@ -39,8 +39,8 @@ public class POS implements Serializable {
     private EntityManager em;
     @Resource
     private UserTransaction utx;
-    private List<Usergroup> group1List = new ArrayList<>();
-    private Usergroup group1 = new Usergroup();
+    private List<Usergroup> usergroupList = new ArrayList<>();
+    private Usergroup usergroup = new Usergroup();
     private List<User> userList = new ArrayList<>();
     private User user = new User();
     private List<Status> statusList = new ArrayList<>();
@@ -125,16 +125,16 @@ public class POS implements Serializable {
         try {
 
             setUser((User) getEm().createQuery("select u from User u where u.username = '" + getUsername() + "' and u.pword = '" + getPassword() + "'").getSingleResult());
-            setGroup1((Usergroup) getEm().createQuery("select u from Usergroup u where u.idgroups = " + getUser().getGroupID() + "").getSingleResult());
-            if (getGroup1().getName().equalsIgnoreCase("ADMIN")) {
-
-            } else if (getGroup1().getName().equalsIgnoreCase("ACCOUNTANT")) {
-
-            } else if (getGroup1().getName().equalsIgnoreCase("SELLER")) {
-
-            } else {
-
-            }
+//            setGroup1((Usergroup) getEm().createQuery("select u from Usergroup u where u.idgroups = " + getUser().getGroupID() + "").getSingleResult());
+//            if (getUsergroup().getName().equalsIgnoreCase("ADMIN")) {
+//
+//            } else if (getUsergroup().getName().equalsIgnoreCase("ACCOUNTANT")) {
+//
+//            } else if (getUsergroup().getName().equalsIgnoreCase("SELLER")) {
+//
+//            } else {
+//
+//            }
 
             getUtx().begin();
             getAudit().setAction("logged into the system at  " + new Date());
@@ -634,25 +634,26 @@ public class POS implements Serializable {
             getAudit().setAction("created group");
             getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
-            getGroup1().setCreatedBy(new User(1));
-            getGroup1().setCreatedAt(new java.util.Date());
+            usergroup.setCreatedBy(new User(1));
+            usergroup.setCreatedAt(new java.util.Date());
             getEm().persist(getAudit());
-            getEm().persist(getGroup1());
+            getEm().persist(usergroup);
             getUtx().commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", group1.getName() + " saved successfully."));
-            setGroup1(new Usergroup());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", usergroup.getName() + " saved successfully."));
 
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             Logger.getLogger(POS.class.getName()).log(Level.SEVERE, null, ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", group1.getName() + " could not create Usergroup successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", usergroup.getName() + " could not create Usergroup successfully."));
+            ex.printStackTrace();
         }
+        usergroup = new Usergroup();
         return null;
     }
 
     public String updateUsergroup() {
         try {
 
-            Usergroup group2 = getEm().find(Usergroup.class, group1.getIdgroups());
+            Usergroup group2 = getEm().find(Usergroup.class, usergroup.getIdgroups());
             getUtx().begin();
             getAudit().setAction("updated group");
             getAudit().setCreatedby(user.getIdusers());
@@ -786,7 +787,7 @@ public class POS implements Serializable {
             getStatus().setCreatedBy(getUser().getIdusers());
             getUtx().begin();
             getAudit().setAction("created status");
-            getAudit().setCreatedby(user.getIdusers());
+            getAudit().setCreatedby(1);
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(getStatus());
@@ -857,15 +858,15 @@ public class POS implements Serializable {
     }
 
     public List<Usergroup> getUsergroupList() {
-        setGroup1List((List<Usergroup>) getEm().createQuery("select g from Usergroup g").getResultList());
-        return getGroup1List();
+        usergroupList = em.createQuery("select u from Usergroup u").getResultList();
+        return usergroupList;
     }
 
     /**
-     * @param group1List the group1List to set
+     * @param usergroupList the usergroupList to set
      */
-    public void setUsergroupList(List<Usergroup> group1List) {
-        this.setGroup1List(group1List);
+    public void setUsergroupList(List<Usergroup> usergroupList) {
+        this.setUsergroupList(usergroupList);
     }
 
     /**
@@ -980,13 +981,8 @@ public class POS implements Serializable {
         this.password = password;
     }
 
-    public List<Usergroup> getGroup1List() {
-        group1List = getEm().createQuery("select u from Usergroup u").getResultList();
-        return group1List;
-    }
-
-    public void setGroup1List(List<Usergroup> group1List) {
-        this.group1List = group1List;
+    public void setGroup1List(List<Usergroup> usergroupList) {
+        this.usergroupList = usergroupList;
     }
 
     public void setAdvancedModel(MapModel advancedModel) {
@@ -1063,17 +1059,17 @@ public class POS implements Serializable {
 //        this.accidentModel = accidentModel;
 //    }
     /**
-     * @return the group1
+     * @return the usergroup
      */
-    public Usergroup getGroup1() {
-        return group1;
+    public Usergroup getUsergroup() {
+        return usergroup;
     }
 
     /**
-     * @param group1 thgetEm()group1 to set
+     * @param usergroup thgetEm()usergroup to set
      */
-    public void setGroup1(Usergroup group1) {
-        this.group1 = group1;
+    public void setGroup1(Usergroup usergroup) {
+        this.usergroup = usergroup;
     }
 
     /**

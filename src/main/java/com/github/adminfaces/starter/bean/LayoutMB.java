@@ -28,6 +28,6 @@ public class LayoutMB implements Serializable {
     }
 
     public void setDefaultLayout() {
-        layout = "/WEB-INF/templates/template-horizontal.xhtml";
+        layout = "/WEB-INF/templates/template.xhtml";
     }
 }

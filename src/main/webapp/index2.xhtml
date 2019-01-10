@@ -37,20 +37,20 @@
         </style>
 
         <h:form id="form">
-            <p:dataView var="car" value="#{dataGridView.cars}" rows="12" paginator="true" rowsPerPageTemplate="6,12,16"
+            <p:dataView var="product" value="#{acc.productsList}" rows="12" paginator="true" rowsPerPageTemplate="6,12,16"
                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         gridIcon="pi pi-th-large" listIcon="pi pi-bars">
 
                 <p:dataViewGridItem>
-                    <p:panel header="#{car.id}" style="text-align:center">
+                    <p:panel header="#{product.name}" style="text-align:center">
                         <h:panelGrid columns="1" style="width:100%">
-                            <p:graphicImage name="demo/images/car/#{car.brand}.gif"/> 
+                            <p:graphicImage name="demo/images/product/#{product.brand}.gif"/> 
 
-                            <h:outputText value="#{car.brand}" />
+                            <h:outputText value="#{product.brand}" />
 
-                            <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
+                            <p:commandLink update=":form:productDetail" oncomplete="PF('productDialog').show()" title="View Detail">
                                 <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
-                                <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
+                                <f:setPropertyActionListener value="#{product}" target="#{acc.selectedCar}" />
                             </p:commandLink>
                         </h:panelGrid>
                     </p:panel>
@@ -58,47 +58,47 @@
 
                 <p:dataViewListItem>
                     <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
-                        <p:graphicImage name="demo/images/car/#{car.brand}-big.gif" /> 
+                        <p:graphicImage name="demo/images/product/#{product.brand}-big.gif" /> 
 
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputText value="Id:" />
-                                <h:outputText value="#{car.id}" style="font-weight: bold"/>
+                                <h:outputText value="#{product.id}" style="font-weight: bold"/>
 
                                 <h:outputText value="Year:" />
-                                <h:outputText value="#{car.year}" style="font-weight: bold"/>
+                                <h:outputText value="#{product.year}" style="font-weight: bold"/>
 
                                 <h:outputText value="Color:" />
-                                <h:outputText value="#{car.color}" style="font-weight: bold"/>
+                                <h:outputText value="#{product.color}" style="font-weight: bold"/>
                             </h:panelGrid>
                         </p:outputPanel>
 
-                        <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
+                        <p:commandLink update=":form:productDetail" oncomplete="PF('productDialog').show()" title="View Detail">
                             <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
-                            <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
+                            <f:setPropertyActionListener value="#{product}" target="#{acc.selectedCar}" />
                         </p:commandLink>
                     </h:panelGrid>
                 </p:dataViewListItem>
             </p:dataView>
 
-            <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="carDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty dataGridView.selectedCar}" columnClasses="label,value">
+            <p:dialog header="Car Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="productDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty acc.selectedCar}" columnClasses="label,value">
                         <f:facet name="header">
-                            <p:graphicImage name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif"/> 
+                            <p:graphicImage name="demo/images/product/#{acc.selectedCar.brand}-big.gif"/> 
                         </f:facet>
 
                         <h:outputText value="Id:" />
-                        <h:outputText value="#{dataGridView.selectedCar.id}" />
+                        <h:outputText value="#{acc.selectedCar.id}" />
 
                         <h:outputText value="Year" />
-                        <h:outputText value="#{dataGridView.selectedCar.year}" />
+                        <h:outputText value="#{acc.selectedCar.year}" />
 
                         <h:outputText value="Color:" />
-                        <h:outputText value="#{dataGridView.selectedCar.color}" style="color:#{dataGridView.selectedCar.color}"/>
+                        <h:outputText value="#{acc.selectedCar.color}" style="color:#{acc.selectedCar.color}"/>
 
                         <h:outputText value="Price" />
-                        <h:outputText value="$#{dataGridView.selectedCar.price}" />
+                        <h:outputText value="$#{acc.selectedCar.price}" />
                     </p:panelGrid>
                 </p:outputPanel>
             </p:dialog>
