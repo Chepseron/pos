@@ -70,23 +70,18 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="producttransactionsTable"
                                                  emptyMessage="No producttransactions found with given criteria" filteredValue="#{acc.producttransactionList}">
-                                        <p:column filterBy="#{producttransactions.name}" sortBy="#{producttransactions.name}" headerText="Name">
-                                            <p:outputLabel value="#{producttransactions.name}" />
+                                        <p:column filterBy="#{producttransactions.productID}" sortBy="#{producttransactions.productID}" headerText="productID">
+                                            <p:outputLabel value="#{producttransactions.productID}" />
                                         </p:column>
-                                        <p:column filterBy="#{producttransactions.email}" sortBy="#{producttransactions.email}" headerText="Email Address">
-                                            <p:outputLabel value="#{producttransactions.email}" />
+                                        <p:column filterBy="#{producttransactions.quantity}" sortBy="#{producttransactions.quantity}" headerText="quantity">
+                                            <p:outputLabel value="#{producttransactions.quantity}" />
                                         </p:column>
-                                        <p:column filterBy="#{producttransactions.phone}" sortBy="#{producttransactions.phone}" headerText="phone">
-                                            <p:outputLabel value="#{producttransactions.phone}" />
+                                        <p:column filterBy="#{producttransactions.statusID.name}" sortBy="#{producttransactions.statusID.name}" headerText="Status">
+                                            <p:outputLabel value="#{producttransactions.statusID.name}" />
                                         </p:column>
-                                        <p:column filterBy="#{producttransactions.producttransactionname}" sortBy="#{producttransactions.producttransactionname}" headerText="producttransactionname">
-                                            <p:outputLabel value="#{producttransactions.producttransactionname}" />
-                                        </p:column>
-                                        <p:column  sortBy="#{producttransactions.groupID}"  filterBy="#{producttransactions.groupID}" headerText ="Group">
-                                            <p:outputLabel value="#{producttransactions.groupID}"  style="display: block; color:GREEN" />
-                                        </p:column>
+                                      
                                         <p:column style="width:4%">
-                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:producttransactionDetail" oncomplete="PF('producttransactionDialog').show()"  value="DETAILS"   title="Edit  #{producttransactions.name}'s DETAILS">                                                  
+                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:producttransactionDetail" oncomplete="PF('producttransactionDialog').show()"  value="DETAILS"   title="Edit  #{producttransactions.productID}'s DETAILS">                                                  
                                                 <f:setPropertyActionListener value="#{producttransactions}"   target="#{acc.producttransaction}" />  
                                             </p:commandLink>
                                         </p:column>

@@ -75,22 +75,28 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="productssTable"
                                                  emptyMessage="No productss found with given criteria" filteredValue="#{acc.productsList}">
+                                        <p:column filterBy="#{productss.category.name}" sortBy="#{productss.category.name}" headerText="Name">
+                                            <p:outputLabel value="#{productss.category.name}" />
+                                        </p:column>
+                                        <p:column filterBy="#{productss.createdOn}" sortBy="#{productss.createdOn}" headerText="created On">
+                                            <p:outputLabel value="#{productss.createdOn}" />
+                                        </p:column>
+                                        <p:column filterBy="#{productss.createdby}" sortBy="#{productss.createdby}" headerText="created by">
+                                            <p:outputLabel value="#{productss.createdby}" />
+                                        </p:column>
                                         <p:column filterBy="#{productss.name}" sortBy="#{productss.name}" headerText="Name">
                                             <p:outputLabel value="#{productss.name}" />
                                         </p:column>
-                                        <p:column filterBy="#{productss.email}" sortBy="#{productss.email}" headerText="Email Address">
-                                            <p:outputLabel value="#{productss.email}" />
+                                        <p:column  sortBy="#{productss.retailprice}"  filterBy="#{productss.retailprice}" headerText ="Retail Price">
+                                            <p:outputLabel value="#{productss.retailprice}"  style="display: block; color:GREEN" />
                                         </p:column>
-                                        <p:column filterBy="#{productss.phone}" sortBy="#{productss.phone}" headerText="phone">
-                                            <p:outputLabel value="#{productss.phone}" />
+                                        <p:column  sortBy="#{productss.wholesaleprice}"  filterBy="#{productss.wholesaleprice}" headerText ="Whole sale price">
+                                            <p:outputLabel value="#{productss.wholesaleprice}"  style="display: block; color:GREEN" />
                                         </p:column>
-                                        <p:column filterBy="#{productss.productsname}" sortBy="#{productss.productsname}" headerText="productsname">
-                                            <p:outputLabel value="#{productss.productsname}" />
+                                        <p:column  sortBy="#{productss.stockedQTY}"  filterBy="#{productss.stockedQTY}" headerText ="Stocked Qty">
+                                            <p:outputLabel value="#{productss.stockedQTY}"  style="display: block; color:GREEN" />
                                         </p:column>
-                                        <p:column  sortBy="#{productss.groupID}"  filterBy="#{productss.groupID}" headerText ="Group">
-                                            <p:outputLabel value="#{productss.groupID}"  style="display: block; color:GREEN" />
-                                        </p:column>
-                                        <p:column style="width:4%">
+                                        <p:column>
                                             <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:productsDetail" oncomplete="PF('productsDialog').show()"  value="DETAILS"   title="Edit  #{productss.name}'s DETAILS">                                                  
                                                 <f:setPropertyActionListener value="#{productss}"   target="#{acc.products}" />  
                                             </p:commandLink>

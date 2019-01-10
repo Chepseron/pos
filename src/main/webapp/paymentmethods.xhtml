@@ -66,23 +66,24 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="paymentmethodssTable"
                                                  emptyMessage="No paymentmethodss found with given criteria" filteredValue="#{acc.paymentmethodsList}">
-                                        <p:column filterBy="#{paymentmethodss.name}" sortBy="#{paymentmethodss.name}" headerText="Name">
-                                            <p:outputLabel value="#{paymentmethodss.name}" />
+                                        <p:column filterBy="#{paymentmethodss.createdBy}" sortBy="#{paymentmethodss.createdBy}" headerText="createdBy">
+                                            <p:outputLabel value="#{paymentmethodss.createdBy}" />
                                         </p:column>
-                                        <p:column filterBy="#{paymentmethodss.email}" sortBy="#{paymentmethodss.email}" headerText="Email Address">
-                                            <p:outputLabel value="#{paymentmethodss.email}" />
+                                        <p:column filterBy="#{paymentmethodss.createdOn}" sortBy="#{paymentmethodss.createdOn}" headerText="createdOn">
+                                            <p:outputLabel value="#{paymentmethodss.createdOn}" />
                                         </p:column>
-                                        <p:column filterBy="#{paymentmethodss.phone}" sortBy="#{paymentmethodss.phone}" headerText="phone">
-                                            <p:outputLabel value="#{paymentmethodss.phone}" />
+                                        <p:column filterBy="#{paymentmethodss.description}" sortBy="#{paymentmethodss.description}" headerText="Description">
+                                            <p:outputLabel value="#{paymentmethodss.description}" />
                                         </p:column>
-                                        <p:column filterBy="#{paymentmethodss.paymentmethodsname}" sortBy="#{paymentmethodss.paymentmethodsname}" headerText="paymentmethodsname">
-                                            <p:outputLabel value="#{paymentmethodss.paymentmethodsname}" />
+                                        <p:column filterBy="#{paymentmethodss.method}" sortBy="#{paymentmethodss.method}" headerText="Method">
+                                            <p:outputLabel value="#{paymentmethodss.method}" />
                                         </p:column>
-                                        <p:column  sortBy="#{paymentmethodss.groupID}"  filterBy="#{paymentmethodss.groupID}" headerText ="Group">
-                                            <p:outputLabel value="#{paymentmethodss.groupID}"  style="display: block; color:GREEN" />
+                                        <p:column filterBy="#{paymentmethodss.status}" sortBy="#{paymentmethodss.status}" headerText="status">
+                                            <p:outputLabel value="#{paymentmethodss.status}" />
                                         </p:column>
+                                     
                                         <p:column style="width:4%">
-                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:paymentmethodsDetail" oncomplete="PF('paymentmethodsDialog').show()"  value="DETAILS"   title="Edit  #{paymentmethodss.name}'s DETAILS">                                                  
+                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:paymentmethodsDetail" oncomplete="PF('paymentmethodsDialog').show()"  value="DETAILS"   title="Edit  #{paymentmethodss.method}'s DETAILS">                                                  
                                                 <f:setPropertyActionListener value="#{paymentmethodss}"   target="#{acc.paymentmethods}" />  
                                             </p:commandLink>
                                         </p:column>

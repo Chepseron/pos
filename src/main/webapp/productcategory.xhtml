@@ -66,20 +66,20 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="productcategorysTable"
                                                  emptyMessage="No productcategorys found with given criteria" filteredValue="#{acc.productcategoryList}">
+                                        <p:column filterBy="#{productcategorys.createdBy}" sortBy="#{productcategorys.createdBy}" headerText="created By">
+                                            <p:outputLabel value="#{productcategorys.createdBy}" />
+                                        </p:column>
+                                        <p:column filterBy="#{productcategorys.createdOn}" sortBy="#{productcategorys.createdOn}" headerText="created On">
+                                            <p:outputLabel value="#{productcategorys.createdOn}" />
+                                        </p:column>
+                                        <p:column filterBy="#{productcategorys.description}" sortBy="#{productcategorys.description}" headerText="description">
+                                            <p:outputLabel value="#{productcategorys.description}" />
+                                        </p:column>
                                         <p:column filterBy="#{productcategorys.name}" sortBy="#{productcategorys.name}" headerText="Name">
                                             <p:outputLabel value="#{productcategorys.name}" />
                                         </p:column>
-                                        <p:column filterBy="#{productcategorys.email}" sortBy="#{productcategorys.email}" headerText="Email Address">
-                                            <p:outputLabel value="#{productcategorys.email}" />
-                                        </p:column>
-                                        <p:column filterBy="#{productcategorys.phone}" sortBy="#{productcategorys.phone}" headerText="phone">
-                                            <p:outputLabel value="#{productcategorys.phone}" />
-                                        </p:column>
-                                        <p:column filterBy="#{productcategorys.productcategoryname}" sortBy="#{productcategorys.productcategoryname}" headerText="productcategoryname">
-                                            <p:outputLabel value="#{productcategorys.productcategoryname}" />
-                                        </p:column>
-                                        <p:column  sortBy="#{productcategorys.groupID}"  filterBy="#{productcategorys.groupID}" headerText ="Group">
-                                            <p:outputLabel value="#{productcategorys.groupID}"  style="display: block; color:GREEN" />
+                                        <p:column  sortBy="#{productcategorys.statusID.name}"  filterBy="#{productcategorys.statusID.name}" headerText ="Status">
+                                            <p:outputLabel value="#{productcategorys.statusID.name}"  style="display: block; color:GREEN" />
                                         </p:column>
                                         <p:column style="width:4%">
                                             <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:productcategoryDetail" oncomplete="PF('productcategoryDialog').show()"  value="DETAILS"   title="Edit  #{productcategorys.name}'s DETAILS">                                                  

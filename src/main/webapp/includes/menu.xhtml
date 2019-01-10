@@ -11,46 +11,46 @@
             </p:link>
         </li>
         <li class="header">
-            ACCIDENT MANAGEMENT/DEPLOYMENT
+           Point Of Sale 
         </li>
         <li>
-            <p:link href="/accident.xhtml" rendered="#{acc.reportAccident}">
+            <p:link href="/outlets.xhtml">
                 <i class="fa  fa-money"></i>
-                <span>NEW ACCIDENT</span>
+                <span>Outlets</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/deployment.xhtml" rendered="#{acc.deployHelpers}">
+            <p:link href="/paymentmethods.xhtml">
                 <i class="fa fa-dashboard"></i>
-                <span>DEPLOY HELPERS</span>
+                <span>Payment methods</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/deployment_1.xhtml">
+            <p:link href="/productcategory.xhtml">
                 <i class="fa fa-dashboard"></i>
-                <span>DEPLOYED HELPERS</span>
+                <span>Product Categories</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/audit.xhtml" rendered="#{acc.auditTrails}">
+            <p:link href="/products.xhtml">
                 <i class="fa fa-info-circle"></i>
-                <span>SYSTEM AUDIT</span>
+                <span>Products</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/maps.xhtml">
+            <p:link href="/producttransaction.xhtml">
                 <i class="fa fa-map-marker"></i>
-                <span>ACCIDENT SPOTS</span>
+                <span>Product Transactions</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/actorMaps.xhtml">
+            <p:link href="/transactions.xhtml">
                 <i class="fa fa-map-marker"></i>
-                <span>ACTORS/HELPER SPOTS</span>
+                <span>Transactions</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/criteriaReports.xhtml" rendered="#{acc.criteriaReports}">
+            <p:link href="/criteriaReports.xhtml">
                 <i class="fa  fa-bar-chart"></i>
                 <span>SYSTEM REPORTS<br/></span>
             </p:link>
@@ -59,37 +59,24 @@
             USER MANAGEMENT
         </li>
         <li>
-            <p:link href="/users.xhtml" rendered="#{acc.registerUsers}">
+            <p:link href="/users.xhtml">
                 <i class="fa fa-user"></i>
                 <span>REGISTER USERS</span>
             </p:link>
         </li>
-
         <li>
-            <p:link href="/actors.xhtml" rendered="#{acc.registerHelpers}">
-                <i class="fa  fa-user"></i>
-                <span>REGISTER HELPERS</span>
-            </p:link>
-        </li>
-        <li>
-            <p:link href="/status.xhtml" rendered="#{acc.recordStatus}">
+            <p:link href="/status.xhtml">
                 <i class="fa  fa-hourglass-2"></i>
                 <span>STATUS</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/groups.xhtml" rendered="#{acc.registerGroup}"> 
+            <p:link href="/groups.xhtml"> 
                 <i class="fa fa-object-ungroup"></i>
                 <span>USER GROUPS</span>
             </p:link>
         </li>
-        <li>
-            <p:link href="/mapKeys.xhtml" rendered="#{acc.registerGroup}"> 
-                <i class="fa fa-map-marker"></i>
-                <span>GOOGLE MAP KEY</span>
-            </p:link>
-        </li>
-
+      
     </ul>
     <script type="text/javascript">
         $('.list > li a').click(function () {

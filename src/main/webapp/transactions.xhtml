@@ -72,23 +72,26 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="transactionssTable"
                                                  emptyMessage="No transactionss found with given criteria" filteredValue="#{acc.transactionsList}">
-                                        <p:column filterBy="#{transactionss.name}" sortBy="#{transactionss.name}" headerText="Name">
-                                            <p:outputLabel value="#{transactionss.name}" />
+                                        <p:column filterBy="#{transactionss.createdOn}" sortBy="#{transactionss.createdOn}" headerText="createdOn">
+                                            <p:outputLabel value="#{transactionss.createdOn}" />
                                         </p:column>
-                                        <p:column filterBy="#{transactionss.email}" sortBy="#{transactionss.email}" headerText="Email Address">
-                                            <p:outputLabel value="#{transactionss.email}" />
+                                        <p:column filterBy="#{transactionss.otherdetails}" sortBy="#{transactionss.otherdetails}" headerText="Other details">
+                                            <p:outputLabel value="#{transactionss.otherdetails}" />
                                         </p:column>
-                                        <p:column filterBy="#{transactionss.phone}" sortBy="#{transactionss.phone}" headerText="phone">
-                                            <p:outputLabel value="#{transactionss.phone}" />
+                                        <p:column filterBy="#{transactionss.outletID.outletname}" sortBy="#{transactionss.outletID.outletname}" headerText="Outlet">
+                                            <p:outputLabel value="#{transactionss.outletID.outletname}" />
                                         </p:column>
-                                        <p:column filterBy="#{transactionss.transactionsname}" sortBy="#{transactionss.transactionsname}" headerText="transactionsname">
-                                            <p:outputLabel value="#{transactionss.transactionsname}" />
+                                        <p:column filterBy="#{transactionss.retailprice}" sortBy="#{transactionss.retailprice}" headerText="Retail Price">
+                                            <p:outputLabel value="#{transactionss.retailprice}" />
                                         </p:column>
-                                        <p:column  sortBy="#{transactionss.groupID}"  filterBy="#{transactionss.groupID}" headerText ="Group">
-                                            <p:outputLabel value="#{transactionss.groupID}"  style="display: block; color:GREEN" />
+                                        <p:column  sortBy="#{transactionss.wholesaleprice}"  filterBy="#{transactionss.wholesaleprice}" headerText ="Wholesale price">
+                                            <p:outputLabel value="#{transactionss.wholesaleprice}"  style="display: block; color:GREEN" />
+                                        </p:column>
+                                        <p:column  sortBy="#{transactionss.staffID.name}"  filterBy="#{transactionss.staffID.name}" headerText ="Sold by">
+                                            <p:outputLabel value="#{transactionss.staffID.name}"  style="display: block; color:GREEN" />
                                         </p:column>
                                         <p:column style="width:4%">
-                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:transactionsDetail" oncomplete="PF('transactionsDialog').show()"  value="DETAILS"   title="Edit  #{transactionss.name}'s DETAILS">                                                  
+                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:transactionsDetail" oncomplete="PF('transactionsDialog').show()"  value="DETAILS"   title="Edit  #{transactionss.staffID.name}'s DETAILS">                                                  
                                                 <f:setPropertyActionListener value="#{transactionss}"   target="#{acc.transactions}" />  
                                             </p:commandLink>
                                         </p:column>

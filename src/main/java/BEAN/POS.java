@@ -26,13 +26,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.model.chart.LineChartSeries;
-import org.primefaces.model.map.DefaultMapModel;
-import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
@@ -68,7 +62,8 @@ public class POS implements Serializable {
     private List<Transactions> transactionsList = new ArrayList<>();
     private Transactions transactions = new Transactions();
     private String username = new String();
-    String password = new String();
+    private String password = new String();
+    private boolean remember = false;
 
     public POS() {
     }
@@ -85,8 +80,7 @@ public class POS implements Serializable {
     private MapModel actorModel;
     private Marker marker;
 
-    private LineChartModel accidentModel;
-
+//    private LineChartModel accidentModel;
     private void createAccidentModel() {
 //        setAccidentList((List<Accident>) getEm().createQuery("select a from Accident a").getResultList());
 //        setAccidentModel(new LineChartModel());
@@ -144,7 +138,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("logged into the system at  " + new Date());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getUtx().commit();
@@ -170,7 +164,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("saved outlet " + outlet.getOutletname());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(outlet);
@@ -180,19 +174,18 @@ public class POS implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
         }
-        setUser(new User());
+        setOutlet(new Outlet());
         return null;
     }
 
     public String updateOutlet() {
         try {
 
-            Outlet outlet = getEm().find(Outlet.class,
-                    this.outlet.getIdoutlet());
+            Outlet outlet = getEm().find(Outlet.class, this.outlet.getIdoutlet());
 
             getUtx().begin();
             getAudit().setAction("updated outlet " + outlet.getOutletname());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(outlet);
@@ -211,7 +204,7 @@ public class POS implements Serializable {
         try {
 
             getUtx().begin();
-            getAudit().setAction("Deleted user");
+            getAudit().setAction("Deleted Outlet");
             getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
@@ -238,13 +231,14 @@ public class POS implements Serializable {
         try {
 
             getUtx().begin();
-            getAudit().setAction("saved outlet " + paymentmethods.getMethod());
-            getAudit().setCreatedby(1);
+            getAudit().setAction("saved payment method " + paymentmethods.getMethod());
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(paymentmethods);
             getUtx().commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", paymentmethods.getMethod() + " saved successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", paymentmethods.getMethod() + " saved successfully."
+            ));
             setPaymentmethods(new Paymentmethods());
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
@@ -255,11 +249,12 @@ public class POS implements Serializable {
 
     public String updatePaymentmethods() {
         try {
+
             Paymentmethods paymentmethod = getEm().find(Paymentmethods.class,
                     this.paymentmethods.getIdpaymentmethods());
             getUtx().begin();
-            getAudit().setAction("updated paymentmethod " + paymentmethod.getMethod());
-            getAudit().setCreatedby(1);
+            getAudit().setAction("updated payment method " + paymentmethod.getMethod());
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(paymentmethod);
@@ -278,13 +273,14 @@ public class POS implements Serializable {
         try {
 
             getUtx().begin();
-            getAudit().setAction("Deleted user");
+            getAudit().setAction("Deleted payment method");
             getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             Paymentmethods toBeRemoved = (Paymentmethods) getEm().merge(paymentmethod);
             getEm().remove(toBeRemoved);
             getUtx().commit();
+
             paymentmethod = new Paymentmethods();
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Paymentmethods deleted", "Paymentmethods deleted");
             FacesContext context = FacesContext.getCurrentInstance();
@@ -306,17 +302,17 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("saved outlet " + payments.getTransactionID().getRetailprice());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(payments);
             getUtx().commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", payments.getOtherdetails() + " saved successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", payments.getMethodcode() + " created successfully."));
             setPayments(new Payments());
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
         }
-        setUser(new User());
+        setPayments(new Payments());
         return null;
     }
 
@@ -328,7 +324,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("updated payments " + payments.getPaymentAmount());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(payments);
@@ -347,7 +343,7 @@ public class POS implements Serializable {
         try {
 
             getUtx().begin();
-            getAudit().setAction("Deleted user");
+            getAudit().setAction("Deleted payments");
             getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
@@ -375,7 +371,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("saved outlet " + payments.getTransactionID().getRetailprice());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(payments);
@@ -385,7 +381,7 @@ public class POS implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
         }
-        setUser(new User());
+        setProductcategory(new Productcategory());
         return null;
     }
 
@@ -397,7 +393,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("updated productcategory " + productcategory.getName());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(productcategory);
@@ -443,7 +439,6 @@ public class POS implements Serializable {
         try {
             getUtx().begin();
             getAudit().setAction("saved product " + products.getName());
-            getAudit().setCreatedby(1);
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(products);
@@ -464,7 +459,7 @@ public class POS implements Serializable {
                     this.products.getIdproducts());
             getUtx().begin();
             getAudit().setAction("updated products " + products.getName());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(products);
@@ -500,7 +495,7 @@ public class POS implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Products", success);
         }
-        setProducts(new Products());
+
         return null;
     }
 
@@ -508,7 +503,7 @@ public class POS implements Serializable {
         try {
             getUtx().begin();
             getAudit().setAction("saved transaction " + transactions.getOtherdetails());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(transactions);
@@ -524,15 +519,13 @@ public class POS implements Serializable {
 
     public String updateTransaction() {
         try {
-
-            Transactions trans = getEm().find(Transactions.class,
-                    this.transactions.getIdtransactions());
+            Transactions trans = getEm().find(Transactions.class, this.transactions.getIdtransactions());
             getUtx().begin();
             getAudit().setAction("updated transactions " + trans.getOtherdetails());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
-            getEm().merge(transactions);
+            getEm().merge(getTransactions());
             getUtx().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", transactions.getOtherdetails() + " Updated successfully."));
             setTransactions(new Transactions());
@@ -543,7 +536,7 @@ public class POS implements Serializable {
         return null;
     }
 
-    public String deleteTransaction(Transactions transactions) {
+    public String deleteTransactions(Transactions transactions) {
         try {
             getUtx().begin();
             getAudit().setAction("Deleted transaction");
@@ -553,11 +546,11 @@ public class POS implements Serializable {
             Transactions toBeRemoved = (Transactions) getEm().merge(transactions);
             getEm().remove(toBeRemoved);
             getUtx().commit();
-            transactions = new Transactions();
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transaction deleted", "Transaction deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Transaction", success);
-
+            transactions = new Transactions();
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
 
@@ -572,8 +565,8 @@ public class POS implements Serializable {
     public String createProducttransaction() {
         try {
             getUtx().begin();
-            getAudit().setAction("saved producttransaction " + producttransaction.getProductID());
-            getAudit().setCreatedby(1);
+            getAudit().setAction("saved producttransaction " + transactions.getIdtransactions());
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(producttransaction);
@@ -583,7 +576,7 @@ public class POS implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
         }
-        setUser(new User());
+        producttransaction = new Producttransaction();
         return null;
     }
 
@@ -594,7 +587,7 @@ public class POS implements Serializable {
                     this.producttransaction.getIdproducttransaction());
             getUtx().begin();
             getAudit().setAction("updated producttransaction " + producttransaction.getProductID());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(producttransaction);
@@ -611,7 +604,7 @@ public class POS implements Serializable {
     public String deleteProducttransaction(Producttransaction producttransaction) {
         try {
             getUtx().begin();
-            getAudit().setAction("Deleted product");
+            getAudit().setAction("Deleted Product transaction");
             getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
@@ -639,7 +632,7 @@ public class POS implements Serializable {
         try {
             getUtx().begin();
             getAudit().setAction("created group");
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getGroup1().setCreatedBy(new User(1));
             getGroup1().setCreatedAt(new java.util.Date());
@@ -648,9 +641,10 @@ public class POS implements Serializable {
             getUtx().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", group1.getName() + " saved successfully."));
             setGroup1(new Usergroup());
+
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             Logger.getLogger(POS.class.getName()).log(Level.SEVERE, null, ex);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Could not create a group."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", group1.getName() + " could not create Usergroup successfully."));
         }
         return null;
     }
@@ -658,11 +652,10 @@ public class POS implements Serializable {
     public String updateUsergroup() {
         try {
 
-            Usergroup group2 = getEm().find(Usergroup.class,
-                    group1.getIdgroups());
+            Usergroup group2 = getEm().find(Usergroup.class, group1.getIdgroups());
             getUtx().begin();
             getAudit().setAction("updated group");
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(group2);
@@ -682,7 +675,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("Deleted group");
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             Usergroup toBeRemoved = (Usergroup) getEm().merge(group);
@@ -711,7 +704,7 @@ public class POS implements Serializable {
             getUser().setDepartment(1);
             getUtx().begin();
             getAudit().setAction("saved user " + getUser().getUsername());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(getUser());
@@ -745,7 +738,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("updated user " + getUser().getIdusers());
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().merge(user2);
@@ -793,7 +786,7 @@ public class POS implements Serializable {
             getStatus().setCreatedBy(getUser().getIdusers());
             getUtx().begin();
             getAudit().setAction("created status");
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(getStatus());
@@ -811,8 +804,7 @@ public class POS implements Serializable {
     public String updateStatus() {
         try {
 
-            Status statu = getEm().find(Status.class,
-                    this.getStatus().getIdstatus());
+            Status statu = getEm().find(Status.class, this.getStatus().getIdstatus());
 
             statu.setCreatedBy(getUser().getIdusers());
             statu.setDescription(getStatus().getDescription());
@@ -820,7 +812,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("updated status");
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
 
             getEm().persist(getAudit());
@@ -841,7 +833,7 @@ public class POS implements Serializable {
 
             getUtx().begin();
             getAudit().setAction("Deleted status");
-            getAudit().setCreatedby(1);
+            getAudit().setCreatedby(user.getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             Status toBeRemoved = (Status) getEm().merge(status);
@@ -984,14 +976,12 @@ public class POS implements Serializable {
         return password;
     }
 
-    /**
-     * @param password the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
     public List<Usergroup> getGroup1List() {
+        group1List = getEm().createQuery("select u from Usergroup u").getResultList();
         return group1List;
     }
 
@@ -1008,13 +998,6 @@ public class POS implements Serializable {
      */
     public void setMarker(Marker marker) {
         this.marker = marker;
-    }
-
-    /**
-     * @return the em
-     */
-    public EntityManager getEm() {
-        return em;
     }
 
     /**
@@ -1066,20 +1049,19 @@ public class POS implements Serializable {
         return marker;
     }
 
-    /**
-     * @return the accidentModel
-     */
-    public LineChartModel getAccidentModel() {
-        return accidentModel;
-    }
-
-    /**
-     * @param accidentModel the accidentModel to set
-     */
-    public void setAccidentModel(LineChartModel accidentModel) {
-        this.accidentModel = accidentModel;
-    }
-
+//    /**
+//     * @return the accidentModel
+//     */
+//    public LineChartModel getAccidentModel() {
+//        return accidentModel;
+//    }
+//
+//    /**
+//     * @param accidentModel the accidentModel to set
+//     */
+//    public void setAccidentModel(LineChartModel accidentModel) {
+//        this.accidentModel = accidentModel;
+//    }
     /**
      * @return the group1
      */
@@ -1088,7 +1070,7 @@ public class POS implements Serializable {
     }
 
     /**
-     * @param group1 the group1 to set
+     * @param group1 thgetEm()group1 to set
      */
     public void setGroup1(Usergroup group1) {
         this.group1 = group1;
@@ -1098,6 +1080,7 @@ public class POS implements Serializable {
      * @return the outletList
      */
     public List<Outlet> getOutletList() {
+        outletList = getEm().createQuery("select o from Outlet o").getResultList();
         return outletList;
     }
 
@@ -1116,7 +1099,7 @@ public class POS implements Serializable {
     }
 
     /**
-     * @param outlet the outlet to set
+     * @param outlet the outlet to set getEm()
      */
     public void setOutlet(Outlet outlet) {
         this.outlet = outlet;
@@ -1126,6 +1109,7 @@ public class POS implements Serializable {
      * @return the paymentsList
      */
     public List<Paymentmethods> getPaymentmethodsList() {
+        paymentmethodsList = getEm().createQuery("select p from Paymentmethods p").getResultList();
         return paymentmethodsList;
     }
 
@@ -1154,6 +1138,7 @@ public class POS implements Serializable {
      * @return the paymentsList
      */
     public List<Payments> getPaymentsList() {
+        paymentsList = getEm().createQuery("select p from Payments p").getResultList();
         return paymentsList;
     }
 
@@ -1182,6 +1167,7 @@ public class POS implements Serializable {
      * @return the productcategoryList
      */
     public List<Productcategory> getProductcategoryList() {
+        productcategoryList = getEm().createQuery("select p from Productcategory p").getResultList();
         return productcategoryList;
     }
 
@@ -1210,6 +1196,7 @@ public class POS implements Serializable {
      * @return the transactionsList
      */
     public List<Products> getProductsList() {
+        productsList = getEm().createQuery("select p from Products p").getResultList();
         return productsList;
     }
 
@@ -1227,9 +1214,6 @@ public class POS implements Serializable {
         return products;
     }
 
-    /**
-     * @param products the products to set
-     */
     public void setProducts(Products products) {
         this.products = products;
     }
@@ -1238,6 +1222,7 @@ public class POS implements Serializable {
      * @return the producttransactionList
      */
     public List<Producttransaction> getProducttransactionList() {
+        producttransactionList = getEm().createQuery("select p from Producttransaction p").getResultList();
         return producttransactionList;
     }
 
@@ -1266,6 +1251,7 @@ public class POS implements Serializable {
      * @return the transactionsList
      */
     public List<Transactions> getTransactionsList() {
+        transactionsList = getEm().createQuery("select t from Transactions t").getResultList();
         return transactionsList;
     }
 
@@ -1276,9 +1262,6 @@ public class POS implements Serializable {
         this.transactionsList = transactionsList;
     }
 
-    /**
-     * @return the transactions
-     */
     public Transactions getTransactions() {
         return transactions;
     }
@@ -1288,6 +1271,27 @@ public class POS implements Serializable {
      */
     public void setTransactions(Transactions transactions) {
         this.transactions = transactions;
+    }
+
+    /**
+     * @return the em
+     */
+    public EntityManager getEm() {
+        return em;
+    }
+
+    /**
+     * @return the remember
+     */
+    public boolean isRemember() {
+        return remember;
+    }
+
+    /**
+     * @param remember the remember to set
+     */
+    public void setRemember(boolean remember) {
+        this.remember = remember;
     }
 
 }

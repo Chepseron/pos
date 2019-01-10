@@ -61,23 +61,21 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="outletsTable"
                                                  emptyMessage="No outlets found with given criteria" filteredValue="#{acc.outletList}">
-                                        <p:column filterBy="#{outlets.name}" sortBy="#{outlets.name}" headerText="Name">
-                                            <p:outputLabel value="#{outlets.name}" />
-                                        </p:column>
-                                        <p:column filterBy="#{outlets.email}" sortBy="#{outlets.email}" headerText="Email Address">
-                                            <p:outputLabel value="#{outlets.email}" />
-                                        </p:column>
-                                        <p:column filterBy="#{outlets.phone}" sortBy="#{outlets.phone}" headerText="phone">
-                                            <p:outputLabel value="#{outlets.phone}" />
-                                        </p:column>
-                                        <p:column filterBy="#{outlets.outletname}" sortBy="#{outlets.outletname}" headerText="outletname">
+                                        <p:column filterBy="#{outlets.outletname}" sortBy="#{outlets.outletname}" headerText="Name">
                                             <p:outputLabel value="#{outlets.outletname}" />
                                         </p:column>
-                                        <p:column  sortBy="#{outlets.groupID}"  filterBy="#{outlets.groupID}" headerText ="Group">
-                                            <p:outputLabel value="#{outlets.groupID}"  style="display: block; color:GREEN" />
+                                        <p:column filterBy="#{outlets.address}" sortBy="#{outlets.address}" headerText="Address">
+                                            <p:outputLabel value="#{outlets.address}" />
                                         </p:column>
+                                        <p:column filterBy="#{outlets.createdBy}" sortBy="#{outlets.createdBy}" headerText="Created BY">
+                                            <p:outputLabel value="#{outlets.createdBy}" />
+                                        </p:column>
+                                        <p:column filterBy="#{outlets.createdOn}" sortBy="#{outlets.createdOn}" headerText="created On">
+                                            <p:outputLabel value="#{outlets.createdOn}" />
+                                        </p:column>
+
                                         <p:column style="width:4%">
-                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:outletDetail" oncomplete="PF('outletDialog').show()"  value="DETAILS"   title="Edit  #{outlets.name}'s DETAILS">                                                  
+                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:outletDetail" oncomplete="PF('outletDialog').show()"  value="DETAILS"   title="Edit  #{outlets.outletname}'s DETAILS">                                                  
                                                 <f:setPropertyActionListener value="#{outlets}"   target="#{acc.outlet}" />  
                                             </p:commandLink>
                                         </p:column>
@@ -86,7 +84,7 @@
                             </p:tab>
                         </p:tabView>
                         <h:form id="editForm">
-                            <p:dialog header="USER" dynamic="true" widgetVar="outletDialog" showEffect="clip"   hideEffect="explode" resizable="false">
+                            <p:dialog header="Outlet" dynamic="true" widgetVar="outletDialog" showEffect="clip"   hideEffect="explode" resizable="false">
                                 <p:outputPanel id="outletDetail" style="text-align:center;">  
                                     <h:panelGrid columns="1" >
                                         <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
