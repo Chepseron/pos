@@ -26,9 +26,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.model.map.MapModel;
-import org.primefaces.model.map.Marker;
 
 @SessionScoped
 @ManagedBean(name = "acc")
@@ -76,55 +73,16 @@ public class POS implements Serializable {
         } catch (Exception e) {
         }
     }
-    private MapModel advancedModel;
-    private MapModel actorModel;
-    private Marker marker;
 
 //    private LineChartModel accidentModel;
     private void createAccidentModel() {
-//        setAccidentList((List<Accident>) getEm().createQuery("select a from Accident a").getResultList());
-//        setAccidentModel(new LineChartModel());
-//        LineChartSeries Cohort = new LineChartSeries();
-//        Cohort.setFill(true);
-//        Cohort.setLabel("Accident/places occured");
-//
-//        for (Accident med : getAccidentList()) {
-//            Cohort.set(med.getRoad(), med.getDeadVictims());
-//        }
-//
-//        getAccidentModel().addSeries(Cohort);
-//        getAccidentModel().setTitle("Accident");
-//        getAccidentModel().setLegendPosition("ne");
-//        getAccidentModel().setStacked(true);
-//        getAccidentModel().setShowPointLabels(true);
-//
-//        Axis xAxis = new CategoryAxis("Places/Road occured");
-//        getAccidentModel().getAxes().put(AxisType.X, xAxis);
-//        Axis yAxis = getAccidentModel().getAxis(AxisType.Y);
-//        yAxis.setLabel("Deceased victims");
-//        yAxis.setMin(0);
-//
-//        advancedModel = new DefaultMapModel();
-//        accidentList = (List<Accident>) getEm().createQuery("select a from Accident a").getResultList();
-//        for (Accident c : accidentList) {
-//
-//            System.out.println("Latitude and location " + c.getLatitude() + " Road " + c.getRoad());
-//            getAdvancedModel().addOverlay(new Marker(new LatLng(Double.parseDouble(c.getLatitude()), Double.parseDouble(c.getLongitude())), "Road Name:" + c.getRoad() + " Location " + c.getPlaceOccured() + " Deceased Victims " + c.getDeadVictims(), "/images/xml.png", "http://maps.google.com/mapfiles/ms/micons/red-dot.png"));
-//        }
-//
-//        actorModel = new DefaultMapModel();
-//        deploymentunitList = (List<Deploymentunit>) getEm().createQuery("select d FROM Deploymentunit d").getResultList();
-//        for (Deploymentunit c : deploymentunitList) {
-//            getAdvancedModel().addOverlay(new Marker(new LatLng(Double.parseDouble(c.getLatitude()), Double.parseDouble(c.getLongitude())), "Organisation Name:" + c.getOrgname() + " Phone Numbers " + c.getPhoneNumber(), "/images/xml.png", "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
-//            getActorModel().addOverlay(new Marker(new LatLng(Double.parseDouble(c.getLatitude()), Double.parseDouble(c.getLongitude())), "Organisation Name:" + c.getOrgname() + " Phone Numbers " + c.getPhoneNumber(), "/images/xml.png", "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
-//        }
 
     }
 
     public String login() {
         try {
 
-            setUser((User) getEm().createQuery("select u from User u where u.username = '" + getUsername() + "' and u.pword = '" + getPassword() + "'").getSingleResult());
+            user = (User) getEm().createQuery("select u from User u where u.username = '" + username + "' and u.pword = '" + password + "'").getSingleResult();
 //            setGroup1((Usergroup) getEm().createQuery("select u from Usergroup u where u.idgroups = " + getUser().getGroupID() + "").getSingleResult());
 //            if (getUsergroup().getName().equalsIgnoreCase("ADMIN")) {
 //
@@ -135,20 +93,28 @@ public class POS implements Serializable {
 //            } else {
 //
 //            }
+            if (user.equals(null)) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "!ERROR!", "Please provide correct credentials");
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage("loginInfoMessages", message);
+                return "index.xhtml?faces-redirect=true";
+            } else {
+                getUtx().begin();
+                getAudit().setAction("logged into the system at  " + new Date());
+                getAudit().setCreatedby(user.getIdusers());
+                getAudit().setTimer(new Date());
+                getEm().persist(getAudit());
+                getUtx().commit();
 
-            getUtx().begin();
-            getAudit().setAction("logged into the system at  " + new Date());
-            getAudit().setCreatedby(user.getIdusers());
-            getAudit().setTimer(new Date());
-            getEm().persist(getAudit());
-            getUtx().commit();
+                return "index2.xhtml?faces-redirect=true";
+            }
 
-            return "index2.xhtml?faces-redirect=true";
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "!ERROR!", "Please provide correct credentials");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("loginInfoMessages", message);
-            return null;
+
+            return "index.xhtml?faces-redirect=true";
         }
 
     }
@@ -631,12 +597,14 @@ public class POS implements Serializable {
 
         try {
             getUtx().begin();
-            getAudit().setAction("created group");
-            getAudit().setCreatedby(user.getIdusers());
-            getAudit().setTimer(new Date());
+            audit.setAction("created group");
+            audit.setCreatedby(1);
+            audit.setTimer(new Date());
             usergroup.setCreatedBy(new User(1));
             usergroup.setCreatedAt(new java.util.Date());
-            getEm().persist(getAudit());
+            usergroup.setResponsibilities("ALL");
+            usergroup.setStatusID(new Status(1));
+            getEm().persist(audit);
             getEm().persist(usergroup);
             getUtx().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", usergroup.getName() + " saved successfully."));
@@ -705,7 +673,7 @@ public class POS implements Serializable {
             getUser().setDepartment(1);
             getUtx().begin();
             getAudit().setAction("saved user " + getUser().getUsername());
-            getAudit().setCreatedby(user.getIdusers());
+            getAudit().setCreatedby(1);
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(getUser());
@@ -714,6 +682,7 @@ public class POS implements Serializable {
             setUser(new User());
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
+            ex.printStackTrace();
         }
         setUser(new User());
         return null;
@@ -985,17 +954,6 @@ public class POS implements Serializable {
         this.usergroupList = usergroupList;
     }
 
-    public void setAdvancedModel(MapModel advancedModel) {
-        this.advancedModel = advancedModel;
-    }
-
-    /**
-     * @param marker the marker to set
-     */
-    public void setMarker(Marker marker) {
-        this.marker = marker;
-    }
-
     /**
      * @param em the em to set
      */
@@ -1015,34 +973,6 @@ public class POS implements Serializable {
      */
     public void setUtx(UserTransaction utx) {
         this.utx = utx;
-    }
-
-    /**
-     * @return the advancedModel
-     */
-    public MapModel getAdvancedModel() {
-        return advancedModel;
-    }
-
-    /**
-     * @return the actorModel
-     */
-    public MapModel getActorModel() {
-        return actorModel;
-    }
-
-    /**
-     * @param actorModel the actorModel to set
-     */
-    public void setActorModel(MapModel actorModel) {
-        this.actorModel = actorModel;
-    }
-
-    /**
-     * @return the marker
-     */
-    public Marker getMarker() {
-        return marker;
     }
 
 //    /**

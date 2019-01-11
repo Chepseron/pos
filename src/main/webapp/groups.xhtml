@@ -16,7 +16,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                
+
                 <h:form id="ButtonsForm">
                     <p:splitButton value="New" action="car-form?faces-redirect=true"
                                    icon="fa fa-plus"
@@ -35,7 +35,7 @@
                 </h:form>
                 <p:separator/>
 
-                <p:panel id="spanel"   style="margin: 4em; background: transparent;  position: relative; border: 0">
+                <p:panel id="spanel"   style="background: transparent;  position: relative; border: none">
                     <h:panelGrid columns="1">
                         <p:growl id="msgs1" sticky="true" showDetail="true" />
                         <p:tabView  styleClass="si-icon-16x16 si-icon-edit"  style="background: transparent; width: 100%; height: 100%; border: 0" >  
@@ -46,13 +46,8 @@
                                                      layout="grid" styleClass="ui-fluid card">
                                             <p:outputLabel value="Group Name"/>
                                             <p:inputText   style="width:200px" required="true" requiredMessage="missing usergroup name"  value="#{acc.usergroup.name}" />
-                                            <p:outputLabel value="Status"/>
-                                            <p:selectOneMenu filter="true" filterMatchMode="startsWith" required="true" requiredMessage="missing status"  converter="#{convertor}"  immediate="true" editable="true" value="#{acc.usergroup.statusID}"  style="width: 200px" >
-                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
-                                                <f:selectItems value="#{acc.statusList}"  var="usergroup" itemValue="#{usergroup}" itemLabel="#{usergroup.name}" />
-                                            </p:selectOneMenu>
-                                            <p:outputLabel value="Roles"/>
-                                            <p:inputTextarea   style="width:200px" required="true" requiredMessage="missing responsibilities"  value="#{acc.usergroup.responsibilities}" />
+
+
                                             <p:messages for="userForm"  showDetail="true" />
                                         </p:panelGrid>
                                         <h:panelGrid columns="8">
@@ -88,27 +83,27 @@
                         <h:form id="editForm">
                             <p:dialog header="Groups" dynamic="true" widgetVar="usergroupDialog" showEffect="clip"   hideEffect="explode" resizable="false">
                                 <p:outputPanel id="usergroupDetail" style="text-align:center;">  
-                               
-                                        <h:panelGrid columns="1">
-                                            <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
-                                                         layout="grid" styleClass="ui-fluid card">
-                                                <p:outputLabel value="Group Name"/>
-                                                <p:inputText   style="width:200px" required="true" requiredMessage="missing usergroup name"  value="#{acc.usergroup.name}" />
-                                                <p:outputLabel value="Status"/>
-                                                <p:selectOneMenu filter="true" filterMatchMode="startsWith" required="true" requiredMessage="missing status"  converter="#{convertor}"  immediate="true" editable="true" value="#{acc.usergroup.statusID}"  style="width: 200px" >
-                                                    <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
-                                                    <f:selectItems value="#{acc.statusList}"  var="usergroup" itemValue="#{usergroup}" itemLabel="#{usergroup.name}" />
-                                                </p:selectOneMenu>
-                                                <p:outputLabel value="Roles"/>
-                                                <p:inputTextarea   style="width:200px" required="true" requiredMessage="missing responsibilities"  value="#{acc.usergroup.responsibilities}" />
-                                                <p:messages for="userForm"  showDetail="true" />
-                                            </p:panelGrid>
-                                            <h:panelGrid columns="8">
-                                                <p:commandButton value="SUBMIT"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.updateUsergroup}" />
-                                                <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
-                                            </h:panelGrid>
+
+                                    <h:panelGrid columns="1">
+                                        <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
+                                                     layout="grid" styleClass="ui-fluid card">
+                                            <p:outputLabel value="Group Name"/>
+                                            <p:inputText   style="width:200px" required="true" requiredMessage="missing usergroup name"  value="#{acc.usergroup.name}" />
+                                            <p:outputLabel value="Status"/>
+                                            <p:selectOneMenu filter="true" filterMatchMode="startsWith" required="true" requiredMessage="missing status"  converter="#{convertor}"  immediate="true" editable="true" value="#{acc.usergroup.statusID}"  style="width: 200px" >
+                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{acc.statusList}"  var="usergroup" itemValue="#{usergroup}" itemLabel="#{usergroup.name}" />
+                                            </p:selectOneMenu>
+                                            <p:outputLabel value="Roles"/>
+                                            <p:inputTextarea   style="width:200px" required="true" requiredMessage="missing responsibilities"  value="#{acc.usergroup.responsibilities}" />
+                                            <p:messages for="userForm"  showDetail="true" />
+                                        </p:panelGrid>
+                                        <h:panelGrid columns="8">
+                                            <p:commandButton value="SUBMIT"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.updateUsergroup}" />
+                                            <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
                                         </h:panelGrid>
-                                    
+                                    </h:panelGrid>
+
                                 </p:outputPanel>
                             </p:dialog>
                         </h:form>

@@ -67,12 +67,12 @@ public class Paymentmethods implements Serializable {
     private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "methodcode")
     private Collection<Payments> paymentsCollection;
-    @JoinColumn(name = "createdBy", referencedColumnName = "idusers")
-    @ManyToOne(optional = false)
-    private User createdBy;
     @JoinColumn(name = "status", referencedColumnName = "idstatus")
     @ManyToOne(optional = false)
     private Status status;
+    @JoinColumn(name = "createdBy", referencedColumnName = "idusers")
+    @ManyToOne(optional = false)
+    private User createdBy;
 
     public Paymentmethods() {
     }
@@ -130,20 +130,20 @@ public class Paymentmethods implements Serializable {
         this.paymentsCollection = paymentsCollection;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

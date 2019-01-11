@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -51,9 +50,7 @@ public class Usergroup implements Serializable {
     @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "responsibilities")
     private String responsibilities;
     @JoinColumn(name = "createdBy", referencedColumnName = "idusers")
@@ -68,11 +65,6 @@ public class Usergroup implements Serializable {
 
     public Usergroup(Integer idgroups) {
         this.idgroups = idgroups;
-    }
-
-    public Usergroup(Integer idgroups, String responsibilities) {
-        this.idgroups = idgroups;
-        this.responsibilities = responsibilities;
     }
 
     public Integer getIdgroups() {

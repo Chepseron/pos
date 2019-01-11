@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Products.findByWholesaleprice", query = "SELECT p FROM Products p WHERE p.wholesaleprice = :wholesaleprice")
     , @NamedQuery(name = "Products.findByRetailprice", query = "SELECT p FROM Products p WHERE p.retailprice = :retailprice")
     , @NamedQuery(name = "Products.findByCreatedOn", query = "SELECT p FROM Products p WHERE p.createdOn = :createdOn")
-    , @NamedQuery(name = "Products.findByStockedQTY", query = "SELECT p FROM Products p WHERE p.stockedQTY = :stockedQTY")})
+    , @NamedQuery(name = "Products.findByStockedQTY", query = "SELECT p FROM Products p WHERE p.stockedQTY = :stockedQTY")
+    , @NamedQuery(name = "Products.findByImageurl", query = "SELECT p FROM Products p WHERE p.imageurl = :imageurl")})
 public class Products implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,6 +70,11 @@ public class Products implements Serializable {
     @NotNull
     @Column(name = "stockedQTY")
     private int stockedQTY;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
+    @Column(name = "imageurl")
+    private String imageurl;
     @JoinColumn(name = "category", referencedColumnName = "idproductcategory")
     @ManyToOne(optional = false)
     private Productcategory category;
@@ -86,13 +92,14 @@ public class Products implements Serializable {
         this.idproducts = idproducts;
     }
 
-    public Products(Integer idproducts, String name, int wholesaleprice, int retailprice, Date createdOn, int stockedQTY) {
+    public Products(Integer idproducts, String name, int wholesaleprice, int retailprice, Date createdOn, int stockedQTY, String imageurl) {
         this.idproducts = idproducts;
         this.name = name;
         this.wholesaleprice = wholesaleprice;
         this.retailprice = retailprice;
         this.createdOn = createdOn;
         this.stockedQTY = stockedQTY;
+        this.imageurl = imageurl;
     }
 
     public Integer getIdproducts() {
@@ -141,6 +148,14 @@ public class Products implements Serializable {
 
     public void setStockedQTY(int stockedQTY) {
         this.stockedQTY = stockedQTY;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
     public Productcategory getCategory() {
