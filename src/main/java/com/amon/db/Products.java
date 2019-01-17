@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Products.findByRetailprice", query = "SELECT p FROM Products p WHERE p.retailprice = :retailprice")
     , @NamedQuery(name = "Products.findByCreatedOn", query = "SELECT p FROM Products p WHERE p.createdOn = :createdOn")
     , @NamedQuery(name = "Products.findByStockedQTY", query = "SELECT p FROM Products p WHERE p.stockedQTY = :stockedQTY")
-    , @NamedQuery(name = "Products.findByImageurl", query = "SELECT p FROM Products p WHERE p.imageurl = :imageurl")})
+    , @NamedQuery(name = "Products.findByImageurl", query = "SELECT p FROM Products p WHERE p.imageurl = :imageurl")
+    , @NamedQuery(name = "Products.findByOtherdetails", query = "SELECT p FROM Products p WHERE p.otherdetails = :otherdetails")})
 public class Products implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,6 +76,11 @@ public class Products implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "imageurl")
     private String imageurl;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "otherdetails")
+    private String otherdetails;
     @JoinColumn(name = "category", referencedColumnName = "idproductcategory")
     @ManyToOne(optional = false)
     private Productcategory category;
@@ -92,7 +98,7 @@ public class Products implements Serializable {
         this.idproducts = idproducts;
     }
 
-    public Products(Integer idproducts, String name, int wholesaleprice, int retailprice, Date createdOn, int stockedQTY, String imageurl) {
+    public Products(Integer idproducts, String name, int wholesaleprice, int retailprice, Date createdOn, int stockedQTY, String imageurl, String otherdetails) {
         this.idproducts = idproducts;
         this.name = name;
         this.wholesaleprice = wholesaleprice;
@@ -100,6 +106,7 @@ public class Products implements Serializable {
         this.createdOn = createdOn;
         this.stockedQTY = stockedQTY;
         this.imageurl = imageurl;
+        this.otherdetails = otherdetails;
     }
 
     public Integer getIdproducts() {
@@ -156,6 +163,14 @@ public class Products implements Serializable {
 
     public void setImageurl(String imageurl) {
         this.imageurl = imageurl;
+    }
+
+    public String getOtherdetails() {
+        return otherdetails;
+    }
+
+    public void setOtherdetails(String otherdetails) {
+        this.otherdetails = otherdetails;
     }
 
     public Productcategory getCategory() {

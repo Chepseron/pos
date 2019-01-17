@@ -54,6 +54,8 @@ public class Status implements Serializable {
     private Integer createdBy;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusID")
     private Collection<Productcategory> productcategoryCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusid")
+    private Collection<Session> sessionCollection;
     @OneToMany(mappedBy = "statusID")
     private Collection<Usergroup> usergroupCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusID")
@@ -112,6 +114,16 @@ public class Status implements Serializable {
 
     public void setProductcategoryCollection(Collection<Productcategory> productcategoryCollection) {
         this.productcategoryCollection = productcategoryCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Session> getSessionCollection() {
+        return sessionCollection;
+    }
+
+    public void setSessionCollection(Collection<Session> sessionCollection) {
+        this.sessionCollection = sessionCollection;
     }
 
     @XmlTransient

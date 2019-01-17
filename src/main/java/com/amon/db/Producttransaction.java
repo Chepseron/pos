@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Producttransaction.findByIdproducttransaction", query = "SELECT p FROM Producttransaction p WHERE p.idproducttransaction = :idproducttransaction")
     , @NamedQuery(name = "Producttransaction.findByTransactionID", query = "SELECT p FROM Producttransaction p WHERE p.transactionID = :transactionID")
     , @NamedQuery(name = "Producttransaction.findByProductID", query = "SELECT p FROM Producttransaction p WHERE p.productID = :productID")
-    , @NamedQuery(name = "Producttransaction.findByQuantity", query = "SELECT p FROM Producttransaction p WHERE p.quantity = :quantity")})
+    , @NamedQuery(name = "Producttransaction.findByQuantity", query = "SELECT p FROM Producttransaction p WHERE p.quantity = :quantity")
+    , @NamedQuery(name = "Producttransaction.findBySessionDetails", query = "SELECT p FROM Producttransaction p WHERE p.sessionDetails = :sessionDetails")})
 public class Producttransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,6 +55,11 @@ public class Producttransaction implements Serializable {
     @NotNull
     @Column(name = "quantity")
     private int quantity;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "sessionDetails")
+    private String sessionDetails;
     @JoinColumn(name = "statusID", referencedColumnName = "idstatus")
     @ManyToOne(optional = false)
     private Status statusID;
@@ -64,11 +71,12 @@ public class Producttransaction implements Serializable {
         this.idproducttransaction = idproducttransaction;
     }
 
-    public Producttransaction(Integer idproducttransaction, int transactionID, int productID, int quantity) {
+    public Producttransaction(Integer idproducttransaction, int transactionID, int productID, int quantity, String sessionDetails) {
         this.idproducttransaction = idproducttransaction;
         this.transactionID = transactionID;
         this.productID = productID;
         this.quantity = quantity;
+        this.sessionDetails = sessionDetails;
     }
 
     public Integer getIdproducttransaction() {
@@ -101,6 +109,14 @@ public class Producttransaction implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getSessionDetails() {
+        return sessionDetails;
+    }
+
+    public void setSessionDetails(String sessionDetails) {
+        this.sessionDetails = sessionDetails;
     }
 
     public Status getStatusID() {

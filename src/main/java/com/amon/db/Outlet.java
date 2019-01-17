@@ -70,6 +70,8 @@ public class Outlet implements Serializable {
     private String address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "outletID")
     private Collection<Transactions> transactionsCollection;
+    @OneToMany(mappedBy = "outlet")
+    private Collection<User> userCollection;
 
     public Outlet() {
     }
@@ -134,6 +136,16 @@ public class Outlet implements Serializable {
 
     public void setTransactionsCollection(Collection<Transactions> transactionsCollection) {
         this.transactionsCollection = transactionsCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<User> getUserCollection() {
+        return userCollection;
+    }
+
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @Override

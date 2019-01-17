@@ -44,12 +44,11 @@
 
                 <p:panel header="#{product.idproducts}" style="text-align:center">
                     <h:panelGrid columns="1" style="width:100%">
-                        <p:graphicImage name="/images/#{product.imageurl}"/> 
-
+                        <img src="https://41.89.160.40:8181/pos#{product.imageurl}" width="80" height="80" style="border-radius: 25%"/> 
                         <h:outputText value="#{product.name}" />
 
                         <p:commandLink update=":form:productDetail" oncomplete="PF('productDialog').show()" title="View Detail">
-                            <h:outputText styleClass="pi pi-search" style="margin:0 auto;"/>
+                            <h:outputText styleClass="fa fa-search" style="margin:0 auto;"/>
                             <f:setPropertyActionListener value="#{product}" target="#{acc.products}" />
                         </p:commandLink>
                     </h:panelGrid>
@@ -57,25 +56,26 @@
 
             </p:dataGrid>
 
-            <p:dialog header="Car Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="productDetail" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty acc.products}" columnClasses="label,value">
+                    <p:panelGrid  columns="2" rendered="#{not empty acc.products}">
                         <f:facet name="header">
-                            <p:graphicImage name="demo/images/product/#{acc.products.imageurl}"/> 
+                            <img src="https://41.89.160.40:8181/pos#{acc.products.imageurl}" width="80" height="80" style="border-radius: 25%"/> 
                         </f:facet>
-
-                        <h:outputText value="Id:" />
+                        <h:outputText value="Product Name:" />
                         <h:outputText value="#{acc.products.name}" />
-
-                        <h:outputText value="Year" />
+                        <h:outputText value="Retail Price" />
                         <h:outputText value="#{acc.products.retailprice}" />
-
-                        <h:outputText value="Color:" />
-                        <h:outputText value="#{acc.products.stockedQTY}" style="color:#{acc.products.category}"/>
-
-                        <h:outputText value="Price" />
-                        <h:outputText value="$#{acc.products.statusID}" />
+                        <h:outputText value="Description:" />
+                        <h:outputText value="#{acc.products.otherdetails}"/>
+                        <h:outputText value="Sold QTY:" />
+                        <h:outputText value="#{acc.producttransaction.quantity}"/>
                     </p:panelGrid>
+
+                    <h:panelGrid columns="8">
+                        <p:commandButton value="ADD TRANSACTION"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.createTransaction}" />
+                        <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
+                    </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
         </h:form>

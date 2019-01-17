@@ -35,7 +35,7 @@
                     </p:splitButton>
                 </h:form>
                 <p:separator/>
-                 <p:panel id="spanel"   style="background: transparent;  position: relative; border: none">
+                <p:panel id="spanel"   style="background: transparent;  position: relative; border: none">
                     <h:panelGrid columns="1">
                         <p:growl id="msgs1" sticky="true" showDetail="true" />
                         <p:tabView  styleClass="si-icon-16x16 si-icon-edit"  style="background: transparent; width: 100%; height: 100%; border: 0" id="usersTabView"> 
@@ -97,6 +97,11 @@
                                                 <f:setPropertyActionListener value="#{users}"   target="#{acc.user}" />  
                                             </p:commandLink>
                                         </p:column>
+                                        <p:column style="width:4%" headerText="Sessions">
+                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:sessionDetail" oncomplete="PF('sessionDialog').show()"  value="DETAILS"   title="Assign  #{users.name}'s to a working session">                                                  
+                                                <f:setPropertyActionListener value="#{users}"   target="#{acc.user}" />  
+                                            </p:commandLink>
+                                        </p:column>
                                     </p:dataTable>
                                 </h:form>
                             </p:tab>
@@ -104,7 +109,6 @@
                         <h:form id="editForm">
                             <p:dialog header="USER" dynamic="true" widgetVar="userDialog" showEffect="clip"   hideEffect="explode" resizable="false">
                                 <p:outputPanel id="userDetail" style="text-align:center;">  
-
                                     <h:panelGrid columns="1">
                                         <h:panelGrid columns="4">
                                             <p:outputLabel value="Name"/>
@@ -113,7 +117,6 @@
                                             <p:inputText      value="#{acc.user.phone}" />
                                             <p:outputLabel value="Staff ID"/>
                                             <p:inputText      value="#{acc.user.staffID}" />
-
                                             <p:outputLabel value="Group ID"/>
                                             <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.user.groupID}"  style="width: 200px" >
                                                 <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
@@ -125,6 +128,11 @@
                                             <p:inputText      value="#{acc.user.username}" />
                                             <p:outputLabel value="Email address"/>
                                             <p:inputText      value="#{acc.user.email}" />
+                                            <p:outputLabel value="Session"/>
+                                            <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.user.sessionid}"  style="width: 200px" >
+                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{acc.sessionList}"  var="group" itemValue="#{group.idsession}" itemLabel="#{group.startstime}" />
+                                            </p:selectOneMenu>
                                             <p:messages for="userForm"  showDetail="true" />
                                         </h:panelGrid>
                                         <h:panelGrid columns="8">
@@ -132,7 +140,27 @@
                                             <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
                                         </h:panelGrid>
                                     </h:panelGrid>
-
+                                </p:outputPanel>
+                            </p:dialog>
+                            <p:dialog header="SESSION" dynamic="true" widgetVar="sessionDialog" showEffect="clip"   hideEffect="explode" resizable="false">
+                                <p:outputPanel id="sessionDetail" style="text-align:center;">  
+                                    <h:panelGrid columns="1">
+                                        <h:panelGrid columns="4">
+                                            <p:outputLabel value="Name"/>
+                                            <p:inputText    value="#{acc.user.name}" />
+                                            <p:outputLabel value="Mobile phone"/>
+                                            <p:inputText      value="#{acc.user.phone}" />
+                                            <p:outputLabel value="Session"/>
+                                            <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.user.sessionid}"  style="width: 200px" >
+                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{acc.sessionList}"  var="group" itemValue="#{group.idsession}" itemLabel="#{group.startstime}" />
+                                            </p:selectOneMenu>
+                                            <p:messages for="userForm"  showDetail="true" />
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="8">
+                                            <p:commandButton value="SUBMIT"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.updateUser}" />
+                                        </h:panelGrid>
+                                    </h:panelGrid>
                                 </p:outputPanel>
                             </p:dialog>
                         </h:form>

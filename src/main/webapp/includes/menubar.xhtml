@@ -14,43 +14,43 @@
             Point Of Sale 
         </li>
         <li>
-            <p:link href="/outlets.xhtml">
-                <i class="fa  fa-money"></i>
+            <p:link href="/outlets.xhtml" rendered="#{acc.admin}">
+                <i class="fa fa-plug"></i>
                 <span>Outlets</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/paymentmethods.xhtml">
-                <i class="fa fa-dashboard"></i>
+            <p:link href="/paymentmethods.xhtml" rendered="#{acc.admin}">
+                <i class="fa fa-money"></i>
                 <span>Payment methods</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/productcategory.xhtml">
-                <i class="fa fa-dashboard"></i>
+            <p:link href="/productcategory.xhtml" rendered="#{acc.admin}">
+                <i class="fa fa-list-alt"></i>
                 <span>Product Categories</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/products.xhtml">
-                <i class="fa fa-info-circle"></i>
+            <p:link href="/products.xhtml" rendered="#{acc.accountant}">
+                <i class="fa fa-product-hunt"></i>
                 <span>Products</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/producttransaction.xhtml">
-                <i class="fa fa-map-marker"></i>
+            <p:link href="/producttransaction.xhtml" rendered="#{acc.accountant}">
+                <i class="fa fa-exchange"></i>
                 <span>Product Transactions</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/transactions.xhtml">
-                <i class="fa fa-map-marker"></i>
+            <p:link href="/transactions.xhtml" rendered="#{acc.accountant}">
+                <i class="fa fa-exchange"></i>
                 <span>Transactions</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/criteriaReports.xhtml">
+            <p:link href="/criteriaReports.xhtml" rendered="#{acc.admin}">
                 <i class="fa  fa-bar-chart"></i>
                 <span>SYSTEM REPORTS<br/></span>
             </p:link>
@@ -59,21 +59,27 @@
             USER MANAGEMENT
         </li>
         <li>
-            <p:link href="/users.xhtml">
+            <p:link href="/users.xhtml" rendered="#{acc.admin}">
                 <i class="fa fa-user"></i>
                 <span>REGISTER USERS</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/status.xhtml">
+            <p:link href="/status.xhtml" rendered="#{acc.admin}">
                 <i class="fa  fa-hourglass-2"></i>
                 <span>STATUS</span>
             </p:link>
         </li>
         <li>
-            <p:link href="/groups.xhtml"> 
+            <p:link href="/groups.xhtml" rendered="#{acc.admin}"> 
                 <i class="fa fa-object-ungroup"></i>
                 <span>USER GROUPS</span>
+            </p:link>
+        </li>
+        <li>
+            <p:link href="/sessions.xhtml" rendered="#{acc.admin}"> 
+                <i class="fa fa-object-ungroup"></i>
+                <span>USER SESSION</span>
             </p:link>
         </li>
 

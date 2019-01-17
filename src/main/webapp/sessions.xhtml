@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="#{layoutMB.layout}">
+
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="true"/>
+    </ui:define>
+
+    <ui:define name="title">
+
+    </ui:define>
+    <ui:define name="body">
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+
+                <h:form id="ButtonsForm">
+                    <p:splitButton value="New" action="car-form?faces-redirect=true"
+                                   icon="fa fa-plus"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                        <p:menuitem value="Delete Selected" 
+                                    process="@this" update="@form" 
+                                    icon="fa fa-trash">
+                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
+                        </p:menuitem>
+                        <p:menuitem value="Search" update="@(.ui-dialog)"
+                                    oncomplete="PF('searchDialog').show()"
+                                    icon="fa fa-search"/>
+                        <p:menuitem value="Clear" update="@(.ui-dialog, .ui-datatable)" process="@form"
+                                    icon="fa fa-refresh"/>
+                    </p:splitButton>
+                </h:form>
+                <p:separator/>
+                <p:panel id="spanel"   style="background: transparent;  position: relative; border: none">
+                    <h:panelGrid columns="1">
+                        <p:growl id="msgs1" sticky="true" showDetail="true" />
+                        <p:tabView  styleClass="si-icon-16x16 si-icon-edit"  style="background: transparent; width: 100%; height: 100%; border: 0" id="sessionsTabView"> 
+                            <p:tab title="MANAGE SESSIONS SESSIONS" >
+                                <h:form id="sessionForm" style="width: auto" > 
+                                    <h:panelGrid columns="1" >
+                                        <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
+                                                     layout="grid" >
+                                            <p:outputLabel value="Starts At"/>
+                                            <h:outputText value="#{acc.session.startstime}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                            <p:outputLabel value="Ends At"/>
+                                            <h:outputText value="#{acc.session.endtime}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                            <p:outputLabel value="Status"/>
+                                            <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.session.statusid}"  style="width: 200px" >
+                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{acc.statusList}"  var="group" itemValue="#{group}" itemLabel="#{group.name}" />
+                                            </p:selectOneMenu>
+
+                                            <p:messages for="sessionForm"  showDetail="true" />
+                                        </p:panelGrid>
+                                        <h:panelGrid columns="8">
+                                            <p:commandButton value="SUBMIT"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.createSession}" />
+                                            <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                </h:form>
+                            </p:tab>
+                            <p:tab title="CREATED SESSIONS">
+                                <h:form id="createdUsers" style="width: auto" >
+                                    <p:dataTable var="sessions" value="#{acc.sessionList}" widgetVar="sessionsTable"
+                                                 paginator="true" rows="10"
+
+                                                 style="background: transparent; font-size:11px"
+                                                 id="sessionsTable"
+                                                 emptyMessage="No sessions found with given criteria" filteredValue="#{acc.sessionList}">
+                                        <p:column filterBy="#{sessions.createdby}" sortBy="#{sessions.createdby}" headerText="createdby">
+                                            <p:outputLabel value="#{sessions.createdby}" />
+                                        </p:column>
+                                        <p:column filterBy="#{sessions.createdon}" sortBy="#{sessions.createdon}" headerText="createdon">
+                                            <p:outputLabel value="#{sessions.createdon}" />
+                                        </p:column>
+                                        <p:column filterBy="#{sessions.startstime}" sortBy="#{sessions.startstime}" headerText="starts time">
+                                            <p:outputLabel value="#{sessions.startstime}" />
+                                        </p:column>
+                                        <p:column filterBy="#{sessions.endtime}" sortBy="#{sessions.endtime}" headerText="end time">
+                                            <p:outputLabel value="#{sessions.endtime}" />
+                                        </p:column>
+
+                                        <p:column style="width:4%">
+                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:sessionDetail" oncomplete="PF('sessionDialog').show()"  value="DETAILS"   title="Edit  #{sessions.startstime}'s DETAILS">                                                  
+                                                <f:setPropertyActionListener value="#{sessions}"   target="#{acc.session}" />  
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </p:tab>
+                        </p:tabView>
+                        <h:form id="editForm">
+                            <p:dialog header="SESSIONS" dynamic="true" widgetVar="sessionDialog" showEffect="clip"   hideEffect="explode" resizable="false">
+                                <p:outputPanel id="sessionDetail" style="text-align:center;">  
+
+                                    <h:panelGrid columns="1" >
+                                        <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
+                                                     layout="grid" >
+                                            <p:outputLabel value="Starts At"/>
+                                            <h:outputText value="#{acc.session.startstime}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                            <p:outputLabel value="Ends At"/>
+                                            <h:outputText value="#{acc.session.endtime}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                            <p:outputLabel value="Status"/>
+                                            <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.session.statusid}"  style="width: 200px" >
+                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{acc.statusList}"  var="group" itemValue="#{group}" itemLabel="#{group.name}" />
+                                            </p:selectOneMenu>
+
+                                            <p:messages for="sessionForm"  showDetail="true" />
+                                        </p:panelGrid>
+                                        <h:panelGrid columns="8">
+                                            <p:commandButton value="SUBMIT"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.updateSession}" />
+                                            <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+
+                                </p:outputPanel>
+                            </p:dialog>
+                        </h:form>
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </div>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger">
+            <p:commandButton value="Yes" type="button" styleClass="btn-primary ui-confirmdialog-yes"
+                             icon="fa fa-check"/>
+            <p:commandButton value="No" type="button" styleClass="btn-danger ui-confirmdialog-no"
+                             icon="fa fa-close"/>
+        </p:confirmDialog>
+
+        <script type="text/javascript">
+            /*if ('serviceWorker' in navigator) {
+             navigator.serviceWorker.register('sw.js');
+             }*/
+
+
+            if ('serviceWorker' in navigator) {
+                /*  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                 for (let registration of registrations) {
+                 registration.unregister()
+                 }
+                 });*/
+
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('sw.js').then(function (registration) {
+                        // Registration was successful
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function (err) {
+                        // registration failed :(
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
+        </script>
+    </ui:define>
+
+
+</ui:composition>

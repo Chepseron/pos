@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -94,10 +96,18 @@ public class User implements Serializable {
     private Integer createdBy;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy")
     private Collection<Productcategory> productcategoryCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdby")
+    private Collection<Session> sessionCollection;
     @OneToMany(mappedBy = "createdBy")
     private Collection<Usergroup> usergroupCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "staffID")
     private Collection<Transactions> transactionsCollection;
+    @JoinColumn(name = "outlet", referencedColumnName = "idoutlet")
+    @ManyToOne
+    private Outlet outlet;
+    @JoinColumn(name = "sessionid", referencedColumnName = "idsession")
+    @ManyToOne
+    private Session sessionid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy")
     private Collection<Paymentmethods> paymentmethodsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdby")
@@ -232,6 +242,16 @@ public class User implements Serializable {
 
     @XmlTransient
     @JsonIgnore
+    public Collection<Session> getSessionCollection() {
+        return sessionCollection;
+    }
+
+    public void setSessionCollection(Collection<Session> sessionCollection) {
+        this.sessionCollection = sessionCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
     public Collection<Usergroup> getUsergroupCollection() {
         return usergroupCollection;
     }
@@ -248,6 +268,22 @@ public class User implements Serializable {
 
     public void setTransactionsCollection(Collection<Transactions> transactionsCollection) {
         this.transactionsCollection = transactionsCollection;
+    }
+
+    public Outlet getOutlet() {
+        return outlet;
+    }
+
+    public void setOutlet(Outlet outlet) {
+        this.outlet = outlet;
+    }
+
+    public Session getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(Session sessionid) {
+        this.sessionid = sessionid;
     }
 
     @XmlTransient
