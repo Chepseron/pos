@@ -32,7 +32,6 @@
         </style>
 
         <h:form id="form">
-
             <p:dataGrid var="product" value="#{acc.productsList}" columns="3" layout="grid"
                         rows="12" paginator="true" id="products"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -59,6 +58,8 @@
             <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="productDetail" style="text-align:center;">
                     <p:panelGrid  columns="2" rendered="#{not empty acc.products}">
+                        <h:outputText value="Session" />
+                        <h:outputText value="#{acc.producttransaction.sessionDetails}"  style="font-size: 24; color: red"/>
                         <f:facet name="header">
                             <img src="https://41.89.160.40:8181/pos#{acc.products.imageurl}" width="80" height="80" style="border-radius: 25%"/> 
                         </f:facet>
@@ -71,7 +72,6 @@
                         <h:outputText value="Sold QTY:" />
                         <h:outputText value="#{acc.producttransaction.quantity}"/>
                     </p:panelGrid>
-
                     <h:panelGrid columns="8">
                         <p:commandButton value="ADD TRANSACTION"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.createTransaction}" />
                         <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
@@ -79,6 +79,7 @@
                 </p:outputPanel>
             </p:dialog>
         </h:form>
+
     </ui:define>
 
 

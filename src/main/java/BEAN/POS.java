@@ -36,7 +36,7 @@ import org.primefaces.model.UploadedFile;
 @ManagedBean(name = "acc")
 
 public class POS implements Serializable {
-    
+
     @PersistenceContext(unitName = "CSPU")
     private EntityManager em;
     @Resource
@@ -71,23 +71,24 @@ public class POS implements Serializable {
     private boolean admin = false;
     private boolean sales = false;
     private boolean accountant = false;
-    
+    private Date date;
+
     public POS() {
     }
-    
+
     @PostConstruct
     public void init() {
         try {
             createAccidentModel();
-            
+
         } catch (Exception e) {
         }
     }
-    
+
     private void createAccidentModel() {
-        
+
     }
-    
+
     public String login() {
         try {
             user = (User) em.createQuery("select u from User u where u.username = '" + username + "' and u.pword = '" + password + "'").getSingleResult();
@@ -104,7 +105,7 @@ public class POS implements Serializable {
                     getAudit().setTimer(new Date());
                     getEm().persist(getAudit());
                     getUtx().commit();
-                    
+
                     return "index2.xhtml?faces-redirect=true";
                 } else if (usergroup.getName().equalsIgnoreCase("ADMIN")) {
                     setSales(false);
@@ -116,7 +117,7 @@ public class POS implements Serializable {
                     getAudit().setTimer(new Date());
                     getEm().persist(getAudit());
                     getUtx().commit();
-                    
+
                     return "index2.xhtml?faces-redirect=true";
                 } else if (usergroup.getName().equalsIgnoreCase("ACCOUNTANT")) {
                     setSales(false);
@@ -128,41 +129,41 @@ public class POS implements Serializable {
                     getAudit().setTimer(new Date());
                     getEm().persist(getAudit());
                     getUtx().commit();
-                    
+
                     return "index2.xhtml?faces-redirect=true";
                 } else {
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "!ERROR!", "You have not been assigned a working group");
                     FacesContext context = FacesContext.getCurrentInstance();
-                    context.addMessage("loginInfoMessages", message);
+                    context.addMessage("msgs1", message);
                     return "index.xhtml?faces-redirect=true";
                 }
-                
+
             } else {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "!ERROR!", "Your working session is not within the current time interval");
                 FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage("loginInfoMessages", message);
+                context.addMessage("msgs1", message);
                 return "index.xhtml?faces-redirect=true";
             }
-            
+
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "!ERROR!", "Please provide correct credentials");
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage("loginInfoMessages", message);
-            
+            context.addMessage("msgs1", message);
+
             return null;
         }
-        
+
     }
-    
+
     public String logout() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getAttributes().clear();
         return "/index.xhtml?faces-redirect=true";
     }
-    
+
     public String createOutlet() {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("saved outlet " + getOutlet().getOutletname());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -178,12 +179,12 @@ public class POS implements Serializable {
         setOutlet(new Outlet());
         return null;
     }
-    
+
     public String updateOutlet() {
         try {
-            
+
             Outlet outlet = getEm().find(Outlet.class, this.getOutlet().getIdoutlet());
-            
+
             getUtx().begin();
             getAudit().setAction("updated outlet " + outlet.getOutletname());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -191,7 +192,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(outlet);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", outlet.getOutletname() + " Updated successfully."));
             setOutlet(new Outlet());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -200,10 +201,10 @@ public class POS implements Serializable {
         setOutlet(new Outlet());
         return null;
     }
-    
+
     public String deleteOutlet(Outlet outlet) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted Outlet");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -216,10 +217,10 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Outlet deleted", "Outlet deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Outlet", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Outlet", success);
@@ -227,12 +228,12 @@ public class POS implements Serializable {
         setOutlet(new Outlet());
         return null;
     }
-    
+
     public String createSession() {
         try {
             getSession().setCreatedby(new User(1));
             getSession().setCreatedon(new java.util.Date());
-            
+
             getUtx().begin();
             getAudit().setAction("saved session " + getSession().getStartstime());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -248,12 +249,12 @@ public class POS implements Serializable {
         setSession(new Session());
         return null;
     }
-    
+
     public String updateSession() {
         try {
-            
+
             Session session = getEm().find(Session.class, this.getSession().getIdsession());
-            
+
             getUtx().begin();
             getAudit().setAction("updated session " + session.getStartstime());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -261,7 +262,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(session);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", session.getStartstime() + " Updated successfully."));
             setSession(new Session());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -270,10 +271,10 @@ public class POS implements Serializable {
         setSession(new Session());
         return null;
     }
-    
+
     public String deleteSession(Session session) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted Session");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -286,10 +287,10 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Session deleted", "Session deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Session", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Session", success);
@@ -297,10 +298,10 @@ public class POS implements Serializable {
         setSession(new Session());
         return null;
     }
-    
+
     public String createPaymentmethods() {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("saved payment method " + getPaymentmethods().getMethod());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -317,10 +318,10 @@ public class POS implements Serializable {
         setPaymentmethods(new Paymentmethods());
         return null;
     }
-    
+
     public String updatePaymentmethods() {
         try {
-            
+
             Paymentmethods paymentmethod = getEm().find(Paymentmethods.class,
                     this.getPaymentmethods().getIdpaymentmethods());
             getUtx().begin();
@@ -330,7 +331,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(paymentmethod);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", paymentmethod.getMethod() + " Updated successfully."));
             setPaymentmethods(new Paymentmethods());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -339,10 +340,10 @@ public class POS implements Serializable {
         setPaymentmethods(new Paymentmethods());
         return null;
     }
-    
+
     public String deletePaymentmethods(Paymentmethods paymentmethod) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted payment method");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -351,15 +352,15 @@ public class POS implements Serializable {
             Paymentmethods toBeRemoved = (Paymentmethods) getEm().merge(paymentmethod);
             getEm().remove(toBeRemoved);
             getUtx().commit();
-            
+
             paymentmethod = new Paymentmethods();
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Paymentmethods deleted", "Paymentmethods deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Paymentmethods", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Paymentmethods", success);
@@ -367,10 +368,10 @@ public class POS implements Serializable {
         setPaymentmethods(new Paymentmethods());
         return null;
     }
-    
+
     public String createPayments() {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("saved payments " + getPayments().getTransactionID().getRetailprice());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -386,13 +387,13 @@ public class POS implements Serializable {
         setPayments(new Payments());
         return null;
     }
-    
+
     public String updatePayments() {
         try {
-            
+
             Payments payments = getEm().find(Payments.class,
                     this.getPayments().getIdpayments());
-            
+
             getUtx().begin();
             getAudit().setAction("updated payments " + payments.getPaymentAmount());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -400,7 +401,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(payments);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", payments.getPaymentAmount() + " Updated successfully."));
             setPayments(new Payments());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -409,10 +410,10 @@ public class POS implements Serializable {
         setPayments(new Payments());
         return null;
     }
-    
+
     public String deletePayments(Payments payments) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted payments");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -425,10 +426,10 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Payments deleted", "Payments deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Payments", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Payments", success);
@@ -436,10 +437,10 @@ public class POS implements Serializable {
         setPayments(new Payments());
         return null;
     }
-    
+
     public String createProductcategory() {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("saved category " + getProductcategory().getName());
             getAudit().setCreatedby(1);
@@ -458,13 +459,13 @@ public class POS implements Serializable {
         setProductcategory(new Productcategory());
         return null;
     }
-    
+
     public String updateProductcategory() {
         try {
-            
+
             Productcategory productcategory = getEm().find(Productcategory.class,
                     this.getProductcategory().getIdproductcategory());
-            
+
             getUtx().begin();
             getAudit().setAction("updated productcategory " + productcategory.getName());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -472,7 +473,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(productcategory);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", productcategory.getName() + " Updated successfully."));
             setProductcategory(new Productcategory());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -481,10 +482,10 @@ public class POS implements Serializable {
         setProductcategory(new Productcategory());
         return null;
     }
-    
+
     public String deleteProductcategory(Productcategory productcategory) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted user");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -497,10 +498,10 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Productcategory deleted", "Productcategory deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Productcategory", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Productcategory", success);
@@ -508,9 +509,9 @@ public class POS implements Serializable {
         setProductcategory(new Productcategory());
         return null;
     }
-    
+
     private UploadedFile file;
-    
+
     public String createProducts() {
         try {
             getUtx().begin();
@@ -532,10 +533,10 @@ public class POS implements Serializable {
         setUser(new User());
         return null;
     }
-    
+
     public String updateProducts() {
         try {
-            
+
             Products products = getEm().find(Products.class,
                     this.getProducts().getIdproducts());
             getUtx().begin();
@@ -553,7 +554,7 @@ public class POS implements Serializable {
         setProducts(new Products());
         return null;
     }
-    
+
     public String deleteProducts(Products products) {
         try {
             getUtx().begin();
@@ -568,21 +569,21 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Products deleted", "Products deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Products", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Products", success);
         }
-        
+
         return null;
     }
-    
+
     public String createTransaction() {
         try {
-            
+
             transactions.setCreatedOn(new java.util.Date());
             transactions.setRetailprice(products.getRetailprice());
             transactions.setStaffID(getUser());
@@ -590,31 +591,33 @@ public class POS implements Serializable {
             transactions.setWholesaleprice(products.getWholesaleprice());
             transactions.setOutletID(user.getOutlet());
             transactions.setOtherdetails(products.getOtherdetails());
-            
+
             getUtx().begin();
-            getAudit().setAction("saved transaction " + getTransactions().getOtherdetails());
+            getAudit().setAction("saved transaction " + getTransactions().getRetailprice());
             getAudit().setCreatedby(getUser().getIdusers());
             getAudit().setTimer(new Date());
             getEm().persist(getAudit());
             getEm().persist(getTransactions());
-            
+
             em.flush();
-            
-            producttransaction.setProductID(products.getIdproducts());
+
+            producttransaction.setProductID(products);
             producttransaction.setQuantity(producttransaction.getQuantity());
             producttransaction.setStatusID(new Status(2));
-            producttransaction.setTransactionID(transactions.getIdtransactions());
-            
+            producttransaction.setTransactionID(transactions);
+            producttransaction.setSessionDetails(producttransaction.getSessionDetails());
+            getEm().persist(producttransaction);
             getUtx().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", getTransactions().getOtherdetails() + " saved successfully."));
             setTransactions(new Transactions());
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ex.getMessage()));
+            ex.printStackTrace();
         }
         setTransactions(new Transactions());
         return null;
     }
-    
+
     public String updateTransaction() {
         try {
             Transactions trans = getEm().find(Transactions.class, this.getTransactions().getIdtransactions());
@@ -633,7 +636,7 @@ public class POS implements Serializable {
         setTransactions(new Transactions());
         return null;
     }
-    
+
     public String deleteTransactions(Transactions transactions) {
         try {
             getUtx().begin();
@@ -644,14 +647,14 @@ public class POS implements Serializable {
             Transactions toBeRemoved = (Transactions) getEm().merge(transactions);
             getEm().remove(toBeRemoved);
             getUtx().commit();
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Transaction deleted", "Transaction deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Transaction", success);
             transactions = new Transactions();
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Transaction", success);
@@ -659,7 +662,7 @@ public class POS implements Serializable {
         transactions = new Transactions();
         return null;
     }
-    
+
     public String createProducttransaction() {
         try {
             getUtx().begin();
@@ -677,10 +680,10 @@ public class POS implements Serializable {
         setProducttransaction(new Producttransaction());
         return null;
     }
-    
+
     public String updateProducttransaction() {
         try {
-            
+
             Producttransaction producttransaction = getEm().find(Producttransaction.class,
                     this.getProducttransaction().getIdproducttransaction());
             getUtx().begin();
@@ -698,7 +701,7 @@ public class POS implements Serializable {
         setProducttransaction(new Producttransaction());
         return null;
     }
-    
+
     public String deleteProducttransaction(Producttransaction producttransaction) {
         try {
             getUtx().begin();
@@ -713,10 +716,10 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Producttransaction deleted", "Producttransaction deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Producttransaction", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Producttransaction", success);
@@ -724,9 +727,9 @@ public class POS implements Serializable {
         setProducttransaction(new Producttransaction());
         return null;
     }
-    
+
     public String createUsergroup() {
-        
+
         try {
             getUtx().begin();
             getAudit().setAction("created group");
@@ -740,7 +743,7 @@ public class POS implements Serializable {
             getEm().persist(getUsergroup());
             getUtx().commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", getUsergroup().getName() + " saved successfully."));
-            
+
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             Logger.getLogger(POS.class.getName()).log(Level.SEVERE, null, ex);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", getUsergroup().getName() + " could not create Usergroup successfully."));
@@ -749,10 +752,10 @@ public class POS implements Serializable {
         setUsergroup(new Usergroup());
         return null;
     }
-    
+
     public String updateUsergroup() {
         try {
-            
+
             Usergroup group2 = getEm().find(Usergroup.class, getUsergroup().getIdgroups());
             getUtx().begin();
             getAudit().setAction("updated group");
@@ -761,7 +764,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(group2);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", group2.getName() + " Updated successfully."));
             group2 = new Usergroup();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -770,10 +773,10 @@ public class POS implements Serializable {
         setGroup1(new Usergroup());
         return null;
     }
-    
+
     public String deleteUsergroup(Usergroup group) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted group");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -784,19 +787,19 @@ public class POS implements Serializable {
             getUtx().commit();
             group = new Usergroup();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", group.getName() + " Deleted successfully."));
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", group.getName() + " failed to delete successfully."));
         }
         group = new Usergroup();
         return null;
     }
-    
+
     public String createUser() {
         try {
-            
+
             getUser().setCreatedAt(new java.util.Date());
             getUser().setCreatedBy(1);
             getUser().setLastLogin(new java.util.Date());
@@ -819,10 +822,10 @@ public class POS implements Serializable {
         setUser(new User());
         return null;
     }
-    
+
     public String updateUser() {
         try {
-            
+
             User user2 = getEm().find(User.class,
                     getUser().getIdusers());
             user2.setCreatedAt(new java.util.Date());
@@ -837,7 +840,7 @@ public class POS implements Serializable {
             user2.setStaffID(getUser().getStaffID());
             user2.setStatusID(1);
             user2.setUsername(getUser().getUsername());
-            
+
             getUtx().begin();
             getAudit().setAction("updated user " + getUser().getIdusers());
             getAudit().setCreatedby(getUser().getIdusers());
@@ -845,7 +848,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().merge(user2);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", getUser().getName() + " Updated successfully."));
             setUser(new User());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -854,10 +857,10 @@ public class POS implements Serializable {
         setUser(new User());
         return null;
     }
-    
+
     public String deleteUser(User user) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted user");
             getAudit().setCreatedby(user.getIdusers());
@@ -870,10 +873,10 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "User deleted", "User deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("User", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("User", success);
@@ -881,10 +884,10 @@ public class POS implements Serializable {
         user = new User();
         return null;
     }
-    
+
     public String createStatus() {
         try {
-            
+
             getStatus().setCreatedBy(getUser().getIdusers());
             getUtx().begin();
             getAudit().setAction("created status");
@@ -893,7 +896,7 @@ public class POS implements Serializable {
             getEm().persist(getAudit());
             getEm().persist(getStatus());
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", getStatus().getName() + " saved successfully."));
             setStatus(new Status());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -902,25 +905,25 @@ public class POS implements Serializable {
         setStatus(new Status());
         return null;
     }
-    
+
     public String updateStatus() {
         try {
-            
+
             Status statu = getEm().find(Status.class, this.getStatus().getIdstatus());
-            
+
             statu.setCreatedBy(getUser().getIdusers());
             statu.setDescription(getStatus().getDescription());
             statu.setName(getStatus().getName());
-            
+
             getUtx().begin();
             getAudit().setAction("updated status");
             getAudit().setCreatedby(getUser().getIdusers());
             getAudit().setTimer(new Date());
-            
+
             getEm().persist(getAudit());
             getEm().merge(statu);
             getUtx().commit();
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", getStatus().getName() + " Updated successfully."));
             setStatus(new Status());
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
@@ -929,10 +932,10 @@ public class POS implements Serializable {
         setStatus(new Status());
         return null;
     }
-    
+
     public String deleteStatus(Status status) {
         try {
-            
+
             getUtx().begin();
             getAudit().setAction("Deleted status");
             getAudit().setCreatedby(getUser().getIdusers());
@@ -945,11 +948,11 @@ public class POS implements Serializable {
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Status deleted", "Status deleted");
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Status", success);
-            
+
             return null;
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException e) {
             e.printStackTrace();
-            
+
             FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage());
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage("Status", success);
@@ -957,7 +960,7 @@ public class POS implements Serializable {
         status = new Status();
         return null;
     }
-    
+
     public List<Usergroup> getUsergroupList() {
         usergroupList = getEm().createQuery("select u from Usergroup u").getResultList();
         return usergroupList;
@@ -1077,11 +1080,11 @@ public class POS implements Serializable {
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public void setGroup1List(List<Usergroup> usergroupList) {
         this.setUsergroupList(usergroupList);
     }
@@ -1269,9 +1272,10 @@ public class POS implements Serializable {
      * @return the products
      */
     public Products getProducts() {
+        producttransaction.setSessionDetails(user.getOutlet().getOutletname() + user.getName() + new java.util.Date());
         return products;
     }
-    
+
     public void setProducts(Products products) {
         this.products = products;
     }
@@ -1319,7 +1323,7 @@ public class POS implements Serializable {
     public void setTransactionsList(List<Transactions> transactionsList) {
         this.transactionsList = transactionsList;
     }
-    
+
     public Transactions getTransactions() {
         return transactions;
     }
@@ -1443,5 +1447,20 @@ public class POS implements Serializable {
     public void setAccountant(boolean accountant) {
         this.accountant = accountant;
     }
-    
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        date = new java.util.Date();
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }

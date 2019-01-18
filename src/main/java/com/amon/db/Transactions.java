@@ -71,6 +71,8 @@ public class Transactions implements Serializable {
     private String otherdetails;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transactionID")
     private Collection<Payments> paymentsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transactionID")
+    private Collection<Producttransaction> producttransactionCollection;
     @JoinColumn(name = "staffID", referencedColumnName = "idusers")
     @ManyToOne(optional = false)
     private User staffID;
@@ -144,6 +146,16 @@ public class Transactions implements Serializable {
 
     public void setPaymentsCollection(Collection<Payments> paymentsCollection) {
         this.paymentsCollection = paymentsCollection;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Producttransaction> getProducttransactionCollection() {
+        return producttransactionCollection;
+    }
+
+    public void setProducttransactionCollection(Collection<Producttransaction> producttransactionCollection) {
+        this.producttransactionCollection = producttransactionCollection;
     }
 
     public User getStaffID() {

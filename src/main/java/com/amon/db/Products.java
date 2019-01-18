@@ -6,8 +6,10 @@
 package com.amon.db;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,12 +19,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -81,6 +86,8 @@ public class Products implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "otherdetails")
     private String otherdetails;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productID")
+    private Collection<Producttransaction> producttransactionCollection;
     @JoinColumn(name = "category", referencedColumnName = "idproductcategory")
     @ManyToOne(optional = false)
     private Productcategory category;
@@ -171,6 +178,16 @@ public class Products implements Serializable {
 
     public void setOtherdetails(String otherdetails) {
         this.otherdetails = otherdetails;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Producttransaction> getProducttransactionCollection() {
+        return producttransactionCollection;
+    }
+
+    public void setProducttransactionCollection(Collection<Producttransaction> producttransactionCollection) {
+        this.producttransactionCollection = producttransactionCollection;
     }
 
     public Productcategory getCategory() {

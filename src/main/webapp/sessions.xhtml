@@ -45,13 +45,13 @@
                                         <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
                                                      layout="grid" >
                                             <p:outputLabel value="Starts At"/>
-                                            <h:outputText value="#{acc.session.startstime}">
+                                            <h:inputText value="#{acc.session.startstime}">
                                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                            </h:outputText>
+                                            </h:inputText>
                                             <p:outputLabel value="Ends At"/>
-                                            <h:outputText value="#{acc.session.endtime}">
+                                            <h:inputText value="#{acc.session.endtime}">
                                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                            </h:outputText>
+                                            </h:inputText>
                                             <p:outputLabel value="Status"/>
                                             <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.session.statusid}"  style="width: 200px" >
                                                 <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
@@ -75,8 +75,8 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="sessionsTable"
                                                  emptyMessage="No sessions found with given criteria" filteredValue="#{acc.sessionList}">
-                                        <p:column filterBy="#{sessions.createdby}" sortBy="#{sessions.createdby}" headerText="createdby">
-                                            <p:outputLabel value="#{sessions.createdby}" />
+                                        <p:column filterBy="#{sessions.createdby.name}" sortBy="#{sessions.createdby.name}" headerText="createdby">
+                                            <p:outputLabel value="#{sessions.createdby.name}" />
                                         </p:column>
                                         <p:column filterBy="#{sessions.createdon}" sortBy="#{sessions.createdon}" headerText="createdon">
                                             <p:outputLabel value="#{sessions.createdon}" />
@@ -105,13 +105,13 @@
                                         <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
                                                      layout="grid" >
                                             <p:outputLabel value="Starts At"/>
-                                            <h:outputText value="#{acc.session.startstime}">
+                                            <h:inputText value="#{acc.session.startstime}">
                                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                            </h:outputText>
+                                            </h:inputText>
                                             <p:outputLabel value="Ends At"/>
-                                            <h:outputText value="#{acc.session.endtime}">
+                                            <h:inputText value="#{acc.session.endtime}">
                                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                            </h:outputText>
+                                            </h:inputText>
                                             <p:outputLabel value="Status"/>
                                             <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.session.statusid}"  style="width: 200px" >
                                                 <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />

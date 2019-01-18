@@ -31,62 +31,55 @@
                     </p:splitButton>
                 </h:form>
                 <p:separator/>
-                 <p:panel id="spanel"   style="background: transparent;  position: relative; border: none">
+                <p:panel id="spanel"   style="background: transparent;  position: relative; border: none">
                     <h:panelGrid columns="1">
                         <p:growl id="msgs1" sticky="true" showDetail="true" />
                         <p:tabView  styleClass="si-icon-16x16 si-icon-edit"  style="background: transparent; width: 100%; height: 100%; border: 0" id="producttransactionsTabView"> 
-                            <p:tab title="MANAGE PRODUCT TRANSACTIONS">
-                                <h:form id="producttransactionForm" style="width: auto" > 
-                                    <h:panelGrid columns="1" >
-                                        <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
-                                                     layout="grid" >
-
-                                            <p:outputLabel value="Sold quantity"/>
-                                            <p:inputText      value="#{acc.producttransaction.quantity}" />
-                                            <p:outputLabel value="Product"/>
-                                            <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.producttransaction.productID}"  style="width: 200px" >
-                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
-                                                <f:selectItems value="#{acc.productsList}"  var="cat" itemValue="#{cat.name}" itemLabel="#{cat.name}" />
-                                            </p:selectOneMenu>
-                                            <p:outputLabel value="Status"/>
-                                            <p:selectOneMenu    converter="#{convertor}" immediate="true"  value="#{acc.producttransaction.statusID}"  style="width: 200px" >
-                                                <f:selectItem itemLabel=" " itemValue="" noSelectionOption="true" />
-                                                <f:selectItems value="#{acc.statusList}"  var="group" itemValue="#{group.name}" itemLabel="#{group.name}" />
-                                            </p:selectOneMenu>
-                                            <p:messages for="producttransactionForm"  showDetail="true" />
-                                        </p:panelGrid>
-                                        <h:panelGrid columns="8">
-                                            <p:commandButton value="SUBMIT"  icon="fa fa-plus" styleClass="btn-primary"  action="#{acc.createProducttransaction()}" />
-                                            <p:commandButton value="LOGOUT"   action="#{acc.logout}"  icon="fa fa-sign-out" styleClass="btn-primary" />
-                                        </h:panelGrid>
-                                    </h:panelGrid>
-                                </h:form>
-                            </p:tab>
                             <p:tab title="CREATED PRODUCT TRANSACTIONS">
                                 <h:form id="createdUsers" style="width: auto" >
-                                    <p:dataTable var="producttransactions" value="#{acc.producttransactionList}" widgetVar="producttransactionsTable"
-                                                 paginator="true" rows="10"
 
-                                                 style="background: transparent; font-size:11px"
-                                                 id="producttransactionsTable"
-                                                 emptyMessage="No producttransactions found with given criteria" filteredValue="#{acc.producttransactionList}">
-                                        <p:column filterBy="#{producttransactions.productID}" sortBy="#{producttransactions.productID}" headerText="productID">
-                                            <p:outputLabel value="#{producttransactions.productID}" />
-                                        </p:column>
-                                        <p:column filterBy="#{producttransactions.quantity}" sortBy="#{producttransactions.quantity}" headerText="quantity">
-                                            <p:outputLabel value="#{producttransactions.quantity}" />
-                                        </p:column>
-                                        <p:column filterBy="#{producttransactions.statusID.name}" sortBy="#{producttransactions.statusID.name}" headerText="Status">
-                                            <p:outputLabel value="#{producttransactions.statusID.name}" />
-                                        </p:column>
-                                      
-                                        <p:column style="width:4%">
-                                            <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:producttransactionDetail" oncomplete="PF('producttransactionDialog').show()"  value="DETAILS"   title="Edit  #{producttransactions.productID}'s DETAILS">                                                  
-                                                <f:setPropertyActionListener value="#{producttransactions}"   target="#{acc.producttransaction}" />  
-                                            </p:commandLink>
-                                        </p:column>
-                                    </p:dataTable>
+                                    <fieldset>
+                                        <b><legend align="center">#{acc.user.outlet.outletname}</legend></b>
+                                        <b><legend align="center">#{acc.user.outlet.address}</legend></b>
+                                        <b><legend align="center">Served By :#{acc.user.outlet.outletname}</legend></b>
+                                        <b><legend align="center">On #{acc.date}</legend></b>
+                                    </fieldset>
+
+                                    <div style="align-content: center">
+                                        <p:dataTable var="producttransactions" value="#{acc.producttransactionList}" widgetVar="producttransactionsTable"
+                                                     paginator="true" rows="10"
+
+                                                     style="background: transparent; font-size:11px; width: 700px"
+                                                     id="producttransactionsTable"
+                                                     emptyMessage="No product transactions found with given criteria" filteredValue="#{acc.producttransactionList}">
+                                            <p:column filterBy="#{producttransactions.productID.name}" sortBy="#{producttransactions.productID.name}" headerText="Name">
+                                                <p:outputLabel value="#{producttransactions.productID.name}" />
+                                            </p:column>
+                                            <p:column filterBy="#{producttransactions.quantity}" sortBy="#{producttransactions.quantity}"  headerText="quantity">
+                                                <p:outputLabel value="#{producttransactions.quantity}" />
+                                            </p:column>
+                                            <p:column filterBy="#{producttransactions.transactionID.retailprice}"  sortBy="#{producttransactions.transactionID.retailprice}" headerText="price">
+                                                <p:outputLabel value="#{producttransactions.transactionID.retailprice}" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:commandLink process="@this" styleClass="si-icon-16x16 si-icon-edit" update=":editForm:producttransactionDetail" oncomplete="PF('producttransactionDialog').show()"  value="DETAILS"   title="Edit  #{producttransactions.productID}'s DETAILS">                                                  
+                                                    <f:setPropertyActionListener value="#{producttransactions}"   target="#{acc.producttransaction}" />  
+                                                </p:commandLink>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+
+                                    <fieldset>
+                                        <b><legend align="center">Thank you for dining with #{acc.user.outlet.outletname}, Welcome back</legend></b>
+
+                                    </fieldset>
+
+
                                 </h:form>
+
+                                <p:commandButton value="Print" type="button" icon="pi pi-print" style="display:block;margin-bottom: 20px">
+                                    <p:printer target="createdUsers" />
+                                </p:commandButton>
                             </p:tab>
                         </p:tabView>
                         <h:form id="editForm">

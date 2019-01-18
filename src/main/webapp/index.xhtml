@@ -41,7 +41,7 @@
                     <h:form>
                         <p class="login-box-msg">Sign in to start your session</p>
                         <p:messages closable="true"/>
-
+                        <p:growl id="msgs1" sticky="true" showDetail="true" />
                         <div class="form-group has-feedback">
                             <p:inputText value="#{acc.username}"  styleClass="form-control" placeholder="Type in your username"
                                          required="true"
