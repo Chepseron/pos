@@ -36,11 +36,9 @@
                         rows="12" paginator="true" id="products"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
-
                 <f:facet name="header">
                     Food Items For sale
                 </f:facet>
-
                 <p:panel header="#{product.idproducts}" style="text-align:center">
                     <h:panelGrid columns="1" style="width:100%">
                         <img src="https://41.89.160.40:8181/pos#{product.imageurl}" width="80" height="80" style="border-radius: 25%"/> 
@@ -52,7 +50,6 @@
                         </p:commandLink>
                     </h:panelGrid>
                 </p:panel>
-
             </p:dataGrid>
 
             <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">

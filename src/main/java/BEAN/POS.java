@@ -702,6 +702,27 @@ public class POS implements Serializable {
         return null;
     }
 
+    public String indicatePrintedTransaction() {
+        try {
+            producttransactionList = em.createQuery("select p from Producttransaction p where p.statusID = '2' and p.transactionID.staffID = '" + user + "'").getResultList();
+            for (Producttransaction p : producttransactionList) {
+                p.setStatusID(new Status(4));
+                getUtx().begin();
+                getAudit().setAction("printed product transaction " + p.getProductID());
+                getAudit().setCreatedby(getUser().getIdusers());
+                getAudit().setTimer(new Date());
+                getEm().persist(getAudit());
+                getEm().merge(p);
+                getUtx().commit();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", producttransaction.getTransactionID() + " Updated successfully."));
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Could not update a user."));
+        }
+        setProducttransaction(new Producttransaction());
+        return null;
+    }
+
     public String deleteProducttransaction(Producttransaction producttransaction) {
         try {
             getUtx().begin();
@@ -1110,22 +1131,6 @@ public class POS implements Serializable {
         this.utx = utx;
     }
 
-//    /**
-//     * @return the accidentModel
-//     */
-//    public LineChartModel getAccidentModel() {
-//        return accidentModel;
-//    }
-//
-//    /**
-//     * @param accidentModel the accidentModel to set
-//     */
-//    public void setAccidentModel(LineChartModel accidentModel) {
-//        this.accidentModel = accidentModel;
-//    }
-    /**
-     * @return the usergroup
-     */
     public Usergroup getUsergroup() {
         return usergroup;
     }
@@ -1284,7 +1289,7 @@ public class POS implements Serializable {
      * @return the producttransactionList
      */
     public List<Producttransaction> getProducttransactionList() {
-        producttransactionList = getEm().createQuery("select p from Producttransaction p").getResultList();
+        producttransactionList = getEm().createQuery("select p from Producttransaction p where p.statusID.idstatus = '2'").getResultList();
         return producttransactionList;
     }
 
