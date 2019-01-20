@@ -31,6 +31,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.primefaces.model.UploadedFile;
+import org.primefaces.model.chart.MeterGaugeChartModel;
 
 @SessionScoped
 @ManagedBean(name = "acc")
@@ -72,6 +73,8 @@ public class POS implements Serializable {
     private boolean sales = false;
     private boolean accountant = false;
     private Date date;
+    private MeterGaugeChartModel meterGaugeModel1;
+    private MeterGaugeChartModel meterGaugeModel2;
 
     public POS() {
     }
@@ -79,14 +82,38 @@ public class POS implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            createAccidentModel();
+            createMeterGaugeModels();
 
         } catch (Exception e) {
         }
     }
 
-    private void createAccidentModel() {
+    private MeterGaugeChartModel initMeterGaugeModel() {
+        List<Number> intervals = new ArrayList<Number>() {
+            {
+                add(20);
+                add(50);
+                add(120);
+                add(220);
+            }
+        };
+        return new MeterGaugeChartModel(140, intervals);
+    }
 
+    private void createMeterGaugeModels() {
+        meterGaugeModel1 = initMeterGaugeModel();
+        meterGaugeModel1.setTitle("MeterGauge Chart");
+        meterGaugeModel1.setGaugeLabel("km/h");
+        meterGaugeModel1.setGaugeLabelPosition("bottom");
+
+        meterGaugeModel2 = initMeterGaugeModel();
+        meterGaugeModel2.setTitle("Custom Options");
+        meterGaugeModel2.setSeriesColors("66cc66,93b75f,E7E658,cc6666");
+        meterGaugeModel2.setGaugeLabel("km/h");
+        meterGaugeModel2.setGaugeLabelPosition("bottom");
+        meterGaugeModel2.setShowTickLabels(false);
+        meterGaugeModel2.setLabelHeightAdjust(110);
+        meterGaugeModel2.setIntervalOuterRadius(100);
     }
 
     public String login() {
@@ -1466,6 +1493,37 @@ public class POS implements Serializable {
      */
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    
+    
+    
+    /**
+     * @return the meterGaugeModel1
+     */
+    public MeterGaugeChartModel getMeterGaugeModel1() {
+        return meterGaugeModel1;
+    }
+
+    /**
+     * @param meterGaugeModel1 the meterGaugeModel1 to set
+     */
+    public void setMeterGaugeModel1(MeterGaugeChartModel meterGaugeModel1) {
+        this.meterGaugeModel1 = meterGaugeModel1;
+    }
+
+    /**
+     * @return the meterGaugeModel2
+     */
+    public MeterGaugeChartModel getMeterGaugeModel2() {
+        return meterGaugeModel2;
+    }
+
+    /**
+     * @param meterGaugeModel2 the meterGaugeModel2 to set
+     */
+    public void setMeterGaugeModel2(MeterGaugeChartModel meterGaugeModel2) {
+        this.meterGaugeModel2 = meterGaugeModel2;
     }
 
 }
