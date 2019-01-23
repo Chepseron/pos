@@ -50,15 +50,15 @@ public class Producttransaction implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "sessionDetails")
     private String sessionDetails;
-    @JoinColumn(name = "transactionID", referencedColumnName = "idtransactions")
-    @ManyToOne(optional = false)
-    private Transactions transactionID;
     @JoinColumn(name = "statusID", referencedColumnName = "idstatus")
     @ManyToOne(optional = false)
     private Status statusID;
     @JoinColumn(name = "productID", referencedColumnName = "idproducts")
     @ManyToOne(optional = false)
     private Products productID;
+    @JoinColumn(name = "transactionID", referencedColumnName = "idtransactions")
+    @ManyToOne(optional = false)
+    private Transactions transactionID;
 
     public Producttransaction() {
     }
@@ -97,14 +97,6 @@ public class Producttransaction implements Serializable {
         this.sessionDetails = sessionDetails;
     }
 
-    public Transactions getTransactionID() {
-        return transactionID;
-    }
-
-    public void setTransactionID(Transactions transactionID) {
-        this.transactionID = transactionID;
-    }
-
     public Status getStatusID() {
         return statusID;
     }
@@ -119,6 +111,14 @@ public class Producttransaction implements Serializable {
 
     public void setProductID(Products productID) {
         this.productID = productID;
+    }
+
+    public Transactions getTransactionID() {
+        return transactionID;
+    }
+
+    public void setTransactionID(Transactions transactionID) {
+        this.transactionID = transactionID;
     }
 
     @Override

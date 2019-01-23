@@ -83,7 +83,7 @@ public class Products implements Serializable {
     private String imageurl;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 300)
     @Column(name = "otherdetails")
     private String otherdetails;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productID")

@@ -102,12 +102,12 @@ public class User implements Serializable {
     private Collection<Usergroup> usergroupCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "staffID")
     private Collection<Transactions> transactionsCollection;
-    @JoinColumn(name = "outlet", referencedColumnName = "idoutlet")
-    @ManyToOne
-    private Outlet outlet;
     @JoinColumn(name = "sessionid", referencedColumnName = "idsession")
     @ManyToOne
     private Session sessionid;
+    @JoinColumn(name = "outlet", referencedColumnName = "idoutlet")
+    @ManyToOne
+    private Outlet outlet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy")
     private Collection<Paymentmethods> paymentmethodsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdby")
@@ -270,20 +270,20 @@ public class User implements Serializable {
         this.transactionsCollection = transactionsCollection;
     }
 
-    public Outlet getOutlet() {
-        return outlet;
-    }
-
-    public void setOutlet(Outlet outlet) {
-        this.outlet = outlet;
-    }
-
     public Session getSessionid() {
         return sessionid;
     }
 
     public void setSessionid(Session sessionid) {
         this.sessionid = sessionid;
+    }
+
+    public Outlet getOutlet() {
+        return outlet;
+    }
+
+    public void setOutlet(Outlet outlet) {
+        this.outlet = outlet;
     }
 
     @XmlTransient

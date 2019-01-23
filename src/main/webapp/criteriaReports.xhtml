@@ -11,7 +11,7 @@
         <ui:param name="renderBreadCrumb" value="true"/>
     </ui:define>
     <ui:define name="title">
-        <ui:include src="/meters.xhtml"/>
+
     </ui:define>
     <ui:define name="body">
         <div class="box box-primary">
@@ -32,7 +32,7 @@
                                         <p:column filterBy="#{usergroups.name}" sortBy="#{usergroups.name}" headerText="name">
                                             <p:outputLabel value="#{usergroups.name}" />
                                         </p:column>
-                                        <p:column filterBy="#{usergroups.responsibilities}" sortBy="#{usergroups.responsibilities}" headerText="Variance">
+                                        <p:column filterBy="#{usergroups.responsibilities}" sortBy="#{usergroups.responsibilities}" headerText="Responsibilities">
                                             <p:outputLabel value="#{usergroups.responsibilities}" />
                                         </p:column>
                                     </p:dataTable>
@@ -68,7 +68,7 @@
                                 </h:form>
                             </p:tab>
 
-                            <p:tab title="USERS">
+                            <p:tab title="AUDIT">
                                 <h:form id="actorsdAnimalsFor" style="width: auto" >
                                     <p:dataTable var="groups" value="#{acc.auditList}" 
                                                  paginator="true" rows="10"
@@ -153,8 +153,8 @@
                                         <p:column filterBy="#{productss.createdOn}" sortBy="#{productss.createdOn}" headerText="created On">
                                             <p:outputLabel value="#{productss.createdOn}" />
                                         </p:column>
-                                        <p:column filterBy="#{productss.createdby}" sortBy="#{productss.createdby}" headerText="created by">
-                                            <p:outputLabel value="#{productss.createdby}" />
+                                        <p:column filterBy="#{productss.createdby.name}" sortBy="#{productss.createdby.name}" headerText="created by">
+                                            <p:outputLabel value="#{productss.createdby.name}" />
                                         </p:column>
                                         <p:column filterBy="#{productss.name}" sortBy="#{productss.name}" headerText="Name">
                                             <p:outputLabel value="#{productss.name}" />
@@ -204,8 +204,8 @@
                                                  style="background: transparent; font-size:11px"
                                                  id="productcategorysTable"
                                                  emptyMessage="No productcategorys found with given criteria" filteredValue="#{acc.productcategoryList}">
-                                        <p:column filterBy="#{productcategorys.createdBy}" sortBy="#{productcategorys.createdBy}" headerText="created By">
-                                            <p:outputLabel value="#{productcategorys.createdBy}" />
+                                        <p:column filterBy="#{productcategorys.createdBy.name}" sortBy="#{productcategorys.createdBy.name}" headerText="created By">
+                                            <p:outputLabel value="#{productcategorys.createdBy.name}" />
                                         </p:column>
                                         <p:column filterBy="#{productcategorys.createdOn}" sortBy="#{productcategorys.createdOn}" headerText="created On">
                                             <p:outputLabel value="#{productcategorys.createdOn}" />
